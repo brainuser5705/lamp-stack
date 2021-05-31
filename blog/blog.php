@@ -5,9 +5,11 @@
         <title>Blog</title>
     </head>
     <body>
-        <?php include 'blog_config.php'?>
+        <h1>Blog</h1>
 
         <?php
+
+            include 'blog_config.php';
 
             try{
                 // set connection
@@ -22,7 +24,7 @@
 
                 // set a prepared statement to get picture part of entries
                 $getPicStmt = $conn->prepare(
-                    "SELECT path FROM media
+                    "SELECT type, path FROM media
                     WHERE media.entry_id = ?");
                 
                 // fetch result rows as an array of Text objects (with id, text, datetime attributes)

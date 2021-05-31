@@ -7,8 +7,6 @@ $username = "root";
 $password = "";
 $db = "blog";
 
-echo "<h1>blog</h1>";
-
 /**
  * Full entry including text and picture(s)
  */
@@ -33,7 +31,7 @@ class FullEntry{
     }
 
     function __toString(){
-        return '<div class="blog-entry">' . $this->text . $this::compilePictures() . '</div>';
+        return '<div class="blog-entry">' . $this->text . $this->compilePictures() . '</div>';
     }
 
 }
@@ -48,7 +46,7 @@ class Text{
     function __toString(){
         return 
         "<i>$this->datetime</i><br>
-        <p>$this->text</p>";
+        <pre>$this->text</pre>";
     }
 }
 
@@ -56,10 +54,25 @@ class Text{
  * Represent picture portion of an blog entry
  */
 class Picture{
+    public $type;
     public $path;
 
     function __toString(){
-        return '<img src="images\\' . addslashes($this->path) . '" height="200px"; ><br>';
+        $str = "";
+        switch($this->type){
+            case "image":
+                $str = '<img src="images\\' . addslashes($this->path) . '" height="200px"; ><br>';
+                break;
+            case "video":
+                $str = "video";
+                break;
+            case "other":
+                $str = '<a href="images\\' . addslashes($this->path) . '" download>' . $this->path . '</a>';
+                break;
+            default:
+                $str = "";
+        }
+        return $str;
     }
 }
 
