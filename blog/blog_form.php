@@ -29,7 +29,7 @@
             
             include 'blog_config.php';
 
-            $SUBMISSION_ID; // id of submission
+            
 
             if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
@@ -38,6 +38,69 @@
                 // validate text 
                 $text = $_POST["text"];
                 $text = htmlspecialchars($text);
+                
+                /********* FILE(S) SUBMISSION **************/
+
+                // validate and upload files
+                $UPLOAD_DIR = "images/"; 
+                
+                if (isset($_FILES['files']) &&
+                    $_FILES['files']["name"][0] != ""){ // apparently $_FILES is not empty even when nothing is submitted??
+
+                    $files = $_FILES['files']; // stores as associative arrays for each attribute of a file (ex. name)
+                    $filesCount = count($files["name"]);
+
+                    for($i = 0; $i < $filesCount; $i++){
+                        
+                        // initial configuration
+                        $target_file = $UPLOAD_DIR . basename($files["name"][$i]);
+                        $pathinfo = pathinfo($target_file); // path info of original file
+                        $uploadStatus = 0; // for validation
+                        $message = "<i>" . $files["name"][$i] . "</i>: ";
+                        $messageExtension = "";
+
+                        // upload error: file with duplicate name
+                        if (file_exists($target_file)){
+                            $uploadStatus = 1;
+                        }
+                        
+                        // uploading file now
+                        if(isset($_POST["submit"])){
+
+                            // automatically changes target file name by inserting number
+                            if ($uploadStatus == 1){
+                                $fileNum = 1;
+                                while(file_exists($target_file)){
+                                    $target_file = $UPLOAD_DIR . $pathinfo["filename"] . "($fileNum)." . $pathinfo["extension"];
+                                    $fileNum++;
+                                }
+                                $messageExtension = ", due to duplicate, file name changed to " . $target_file;
+                            }
+
+                            // uploading the file and send confirmation message
+                            if (move_uploaded_file($files["tmp_name"][$i], $target_file)){
+                                $message .= "File has successfully been uploaded" . $messageExtension . "<br>";
+                                insertIntoDatabase($text);
+                            }else{
+                                $message .= "<b>Failed to upload file</b> <br>";
+                                deleteFiles($i);
+                            }
+
+                            echo $message;
+
+                        }
+                        
+                    }
+                }
+                
+            }
+
+            /******************* INSERTING INTO DATABASE *************/
+
+            function insertIntoDatabase($text){
+                global $servername, $db, $username, $password, $UPLOAD_DIR;
+
+                $SUBMISSION_ID; // id of submission
 
                 // insert text into database
                 try{
@@ -60,40 +123,18 @@
                 }catch(PDOException $e){
                     echo "Failed to insert text into database: " . $e->getMessage();
                 }
-                
 
-
-                /********* FILE(S) SUBMISSION **************/
-
-
-                // validate and upload files
-                $UPLOAD_DIR = "images/"; 
-                
+                // insert files into database
                 if (isset($_FILES['files']) &&
-                     $_FILES['files']["name"][0] != ""){ // apparently $_FILES is not empty even when nothing is submitted??
+                    $_FILES['files']["name"][0] != ""){ // apparently $_FILES is not empty even when nothing is submitted??
 
                     $files = $_FILES['files']; // stores as associative arrays for each attribute of a file (ex. name)
                     $filesCount = count($files["name"]);
+                    
+                    for ($i = 0; $i<$filesCount; $i++){
 
-                    // loops through each uploaded file
-                    for($i = 0; $i < $filesCount; $i++){
-                        
-                        // initial configuration
                         $target_file = $UPLOAD_DIR . basename($files["name"][$i]);
-                        $pathinfo = pathinfo($target_file); // path info of original file
-                        $uploadStatus = 0; // for validation
-                        $message = "<i>" . $files["name"][$i] . "</i>: ";
-                        $messageExtension = "";
-
-                        // upload error: file with duplicate name
-                        if (file_exists($target_file)){
-                            $uploadStatus = 1;
-                        }
-
-                        //upload error: exceeds file size limit
-                        if ($files["size"][$i] > 41943040){
-                            $uploadStatus = 2;
-                        }
+                        $pathinfo = pathinfo($target_file);
 
                         // get file type based on file extension
                         $fileType = "other"; //default value
@@ -103,34 +144,7 @@
                         }elseif (in_array($fileExtension, array("mp4", "mov"))){
                             $fileType = "video";
                         }
-                        
-                        // uploading file now
-                        if(isset($_POST["submit"])){
 
-                            // automatically changes target file name by inserting number
-                            if ($uploadStatus == 1){
-                                $fileNum = 1;
-                                while(file_exists($target_file)){
-                                    $target_file = $UPLOAD_DIR . $pathinfo["filename"] . "($fileNum)." . $pathinfo["extension"];
-                                    $fileNum++;
-                                }
-                                $messageExtension = ", due to duplicate, file name changed to " . $target_file;
-                            }elseif($uploadStatus == 2){
-                                $messageExtension = ", file size limit exceeded";
-                            }
-
-                            // uploading the file and send confirmation message
-                            if (move_uploaded_file($files["tmp_name"][$i], $target_file)){
-                                $message .= "File has successfully been uploaded" . $messageExtension . "<br>";
-                            }else{
-                                $message .= "<b>Failed to upload file</b>". $messageExtension . "<br>";
-                            }
-
-                            echo $message;
-
-                        }
-
-                        // insert media into database
                         try{
                             $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
                             // set PDO error mode to exception
@@ -145,12 +159,30 @@
                             echo "File (id: {$conn->lastInsertId()}, type: $fileType) has successfully been inserted into database<br>";
                         }catch (PDOException $e){
                             echo "Failed to insert " . filename($target_file) . " into database: " . $e->getMessage(); 
+                            deleteFiles($i);
                         }
-
                     }
                 }
-
             }
+
+            /**
+             * This is call when file upload fails and previous uploads need to be removed.
+             */
+            function deleteFiles($error_index){
+                $files = $_FILES['files'];
+                
+                for ($i = 0; $i < $error_index; $i++){
+                    $filename = basename($files["name"]["i"]);
+                    $target_file = "images/" . $filename;
+                    if (unlink($target_file)){
+                        echo "Successfully deleted previous upload: " . $filename;
+                    }else{
+                        echo "Error in deleting previous upload: " . $filename;
+                    }
+                }
+            }
+
+
 
             
             
