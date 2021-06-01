@@ -35,33 +35,36 @@
                 $text = htmlspecialchars($text);
                 $text = new Text($text);
 
-                $dbconn = new DBConnection("blog");
-                $dbconn->setStatement(
-                    "INSERT INTO entries(id, text)
-                    VALUES (NULL, ?);"
-                );
-                $dbconn->addEntity($text);
-                $dbconn->executeStatement("Failed to insert text into database");
-                $SUBMISSION_ID = $dbconn->getReturn()[0];
+                $insertText = new InsertStatement($dbconn, 
+                    "INSERT INTO entries(text)
+                    VALUES (?);");
+                $insertText->linkEntity($text);
+                $insertText->execute("Failed to insert text into database");
+                $SUBMISSION_ID = $insertText->getReturn();
+
+                var_dump($insertText);
+                echo ("submission id is : " . $SUBMISSION_ID);
 
                 if(isset($_FILES['files']) && $_FILES['files']["name"][0] != ""){
                     $files = $_FILES['files'];
                     $filesCount = count($files["name"]);
 
-                    $dbconn->setStatement(
+                    $insertFile = new InsertStatement($dbconn,
                         "INSERT INTO media (entry_id, type, path)
-                        VALUES(?, ?, ?);"
-                    );
+                        VALUES(?, ?, ?);");
 
                     for ($i = 0; $i < $filesCount; $i++){
                         $fileName = basename($files["name"][$i]);
                         $fileTmpPath = $files["tmp_name"][$i];
                         $file = new File($fileName, $fileTmpPath, $SUBMISSION_ID);
 
-                        $file->upload();
-                        $dbconn->addEntity($file);
+                        // 1. Upload files
+                        // 2. if file upload is successful, then link entities for database insertion.
+                        if($file->upload()){
+                            $insertFile->linkEntity($file);
+                        }
                     }
-                    $dbconn->executeStatement("Failed to insert file into database");
+                    $insertFile->execute("Failed to insert file into database");
 
                 }
             }

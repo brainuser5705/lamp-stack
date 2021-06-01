@@ -11,45 +11,36 @@
 
             include 'blog_config.php';
 
-            try{
-                // set connection
-                $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
-                // set PDO error mode to exception
-                $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            $getText = new SelectStatement($dbconn,
+                "SELECT id, text, datetime FROM entries",
+                PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Text', ["id","text"]);
+            $getText->execute("Fail to get entries from database");
 
-                // set a prepared statement to get text part of entries
-                $getTextStmt = $conn->prepare(
-                    "SELECT id, text, datetime FROM entries");
-                $getTextStmt->execute();
+            $getFiles = new SelectStatement($dbconn,
+                "SELECT path FROM media
+                WHERE media.entry_id = ?");
 
-                // set a prepared statement to get picture part of entries
-                $getPicStmt = $conn->prepare(
-                    "SELECT type, path FROM media
-                    WHERE media.entry_id = ?");
-                
-                // fetch result rows as an array of Text objects (with id, text, datetime attributes)
-                $textsArr = $getTextStmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Text');
+            // get all entries in database
+            $textArr = $getText->getReturn();
+            if ($textArr){
+                foreach ($textArr as $text){
+                    $entryId = $text->getId();
+                    // get files linked to current entry
+                    $getFiles->execute("Fail to get files from database", [$entryId]);
+                    $files = $getFiles->getReturn();
 
-                if ($textsArr){
-                    foreach ($textsArr as $text){
-
-                        // get foreign key connected Media rows
-                        $entry_id = $text->id;
-                        $getPicStmt->execute([$entry_id]); // bind the parameters to prepared statement
-                        $pictures = $getPicStmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Picture');
-                        
-                        echo new FullEntry($text, $pictures);
+                    // turn each return into a File (remember that FETCH_CLASS doesn't work because of the constructor?)
+                    $filesArr = [];
+                    foreach($files as $file){
+                        $filesArr[] = new File($file[0]);
                     }
-                }else{
-                    echo "No entries yet.";
+
+                    echo new FullEntry($text, $filesArr);
                 }
-                
-
-            }catch(PDOException $e){
-                echo "Server Error, no entries from blog can be loaded." . $e->getMessage();
-                // on the real site, if this happens, it can auto send an email to me
+            }else{
+                echo "No entries yet.";
             }
-
+    
         ?>
 
         <!-- good opportunity to use AJAX -->

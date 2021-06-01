@@ -1,55 +1,51 @@
 <?php
 
     include 'blog_config.php';
-
-    try{
-        $conn = new PDO("mysql:host=$servername;dbname=$db", $username, $password);
-        // set PDO error mode to exception
-        $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     
-        //get min id
-        $stmt = "SELECT MIN(id) FROM entries;";
-        $arr = $conn->query($stmt); // fetch mode is associative array
-        $min = $arr->fetch()[0]; // gets the first value of array
-        //get max id
-        $stmt = "SELECT MAX(id) FROM entries;";
-        $arr = $conn->query($stmt); // fetch mode is associative array
-        $max = $arr->fetch()[0]; // gets the first value of array 
+    $getMin = new SelectStatement($dbconn, 
+        "SELECT MIN(id) FROM entries;");
+    $getMin->execute("fail");
 
-        $text;
-        // do while loop in the case entries are deleted and random id generates deleted id
-        do{
-            // get a random id
-            $random_id = rand($min, $max);
+    $getMax = new SelectStatement($dbconn, 
+        "SELECT MAX(id) FROM entries;");
+    $getMax->execute("fail");
 
-            // set a prepared statement to get text part of entries
-            $getTextStmt = $conn->prepare(
-                "SELECT id, text, datetime FROM entries
-                WHERE entries.id = ?");
-            $getTextStmt->execute([$random_id]);
+    // get first row of fetchAll(), get value (default: numeric)
+    $minId = $getMin->getReturn()[0][0];
+    $maxId = $getMax->getReturn()[0][0];
+    
+    $text; // the text of the entry
+    do{
+        // get a random id
+        $random_id = rand($minId, $maxId);
 
-            // set a prepared statement to get picture part of entries
-            $getPicStmt = $conn->prepare(
-                "SELECT path FROM media
-                WHERE media.entry_id = ?");
-            $getPicStmt->execute([$random_id]);
+        // get text that has the random id
+        $getText = new SelectStatement($dbconn,
+        "SELECT id, text, datetime FROM entries
+        WHERE entries.id = ?",
+        PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Text', ["id","text"]);
+        $getText->execute("Fail to get text from database", [$random_id]);
 
-            $textClass = new Text();
-            $getTextStmt->setFetchMode(PDO::FETCH_INTO, $textClass);
-            // get the single Text object
-            $text = $getTextStmt->fetch(); 
+        // get the pictures
+        $getPic = new SelectStatement($dbconn,
+        "SELECT path FROM media
+        WHERE media.entry_id = ?;");
+        $getPic->execute("Fail to get files from database", [$random_id]);
 
-            // get array of Picture objects
-            $pictures = $getPicStmt->fetchAll(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Picture');
+        $text = $getText->getReturn();
+        $pics = $getPic->getReturn();
 
-        }while(!$text); // text is not null
-        
-        echo new FullEntry($text, $pictures);
+    }while(!$text);
 
-    }catch(PDOException $e){
-        echo "Server Error, no entries from blog can be loaded." . $e->getMessage();
-        // on the real site, if this happens, it can auto send an email to me
+    $filesArr = [];
+    if ($pics){
+        foreach($pics as $pic){
+            // need to do this because it can't fetch into File's abnormal constructor!! :(
+            $filesArr[] = new File($pic[0]); // get pic's path
+        }
     }
+
+    echo new FullEntry($text[0], $filesArr);
     
 ?>
 
