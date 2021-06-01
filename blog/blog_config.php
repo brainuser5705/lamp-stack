@@ -3,20 +3,32 @@
 include 'db_operations.php';
 $dbname = "blog";
 
-$dbconn = new DBConnection("blog");
 /**
- * Full entry including text and picture(s)
+ * @var dbconn global connection to database 'blog'
+ */
+$dbconn = new DBConnection("blog");
+
+
+/**
+ * Display text and files in blog page
  */
 class FullEntry{
     
-    private $textObj; // Text object
-    private $filesArr; // Array of pictures
+    private $entryObj; 
+    
+    /**
+     * @var filesArr all File objects attaches to this entry
+     */
+    private $filesArr;
 
-    function __construct($textObj, $filesArr){
-        $this->textObj = $textObj;
+    function __construct($entryObj, $filesArr){
+        $this->entryObj = $entryObj;
         $this->filesArr = $filesArr;
     }
 
+    /**
+     * Compiles all the File objects HTML into a single string
+     */
     function compilePictures(){
         $html = "";
         if (!empty($this->filesArr)){
@@ -28,15 +40,15 @@ class FullEntry{
     }
 
     function __toString(){
-        return '<div class="blog-entry">' . $this->textObj . $this->compilePictures() . '</div>';
+        return '<div class="blog-entry">' . $this->entryObj . $this->compilePictures() . '</div>';
     }
 
 }
 
 /**
- * Represent the text portion of an blog entry
+ * Represent the Entry part of a blog entry
  */
-class Text extends Entity{
+class Entry extends Entity{
 
     private $id;
     private $datetime;
@@ -52,15 +64,26 @@ class Text extends Entity{
         return $this->id;
     }
 
+    /**
+     * The go() function binds parameter to the linked prepared statement and executes it.
+     * 
+     * Note: The prepared statement is acessed through these commands
+     *  1. $s = $this->getStatement() - gets the Statement object this Entity is linked to
+     *  2. $s->getPDOStatement()->execute(...) - gets the actual PDOStatement from the Statement object
+     * 
+     * @see blog_form.php - line 44 to 51
+     * 
+     * @global dbconn database connection, used to get lastInsertId
+     */
     function go(){
-        $insertText = $this->getStatement();
-        $insertText->getPDOStatement()->execute([$this->text]); // executes the actual PDOStatement
+        $insertEntry = $this->getStatement();
+        $insertEntry->getPDOStatement()->execute([$this->text]); // binds the text attribute
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
-        $insertText->setReturn($lastId);
+        $insertEntry->setReturn($lastId);
 
-        echo "Text (id: {$lastId}) has successfully been inserted into database<br>";
+        echo "Entry (id: {$lastId}) has successfully been inserted into database<br>";
     }
 
     function __toString(){
@@ -70,22 +93,48 @@ class Text extends Entity{
     }
 }
 
+
+/**
+ * Represents attached files to a blog entry
+ */
 class File extends Entity{
 
-    private $type = "other";
+    /**
+     * @var targetPath the file path of file
+     */
     private $targetPath;
-    private $pathInfo;
-    private $tmpPath;
-    private $SUBMISSION_ID;
 
     /**
-     * Sets the return string for displaying in blog entry
+     * @var pathInfo the path information of file's path
+     */
+    private $pathInfo;
+
+    /**
+     * @var tmpPath the path of the temporary place where file is stored before uploading
+     */
+    private $tmpPath;
+
+    /**
+     * @var type the type of the file
+     * Enum values: 'image', 'video', 'other'
+     */
+    private $type = "other";
+
+    /**
+     * @var SUBMISSION_ID the foreign id (Entry) of this File object
+     */
+    private $SUBMISSION_ID;
+
+
+    /**
+     * Processes path received from database and assigns to attributes
      */
     public function __construct($path, $tmpPath=null, $SUBMISSION_ID=null){
         $this->targetPath = "images/" . $path;
         $this->pathInfo = pathinfo($this->targetPath);
         $this->tmpPath = $tmpPath;
-        
+    
+        // determine type of file based on extension
         $fileExt = $this->pathInfo["extension"];
         if (in_array($fileExt, array("jpg", "jpeg", "png", "gif"))){
             $this->type = "image";
@@ -98,11 +147,16 @@ class File extends Entity{
 
     /**
      * Uploads file to 'images/' folder
+     * @uses changeFileName
      */
     public function upload(){
+
+        // message to send when upload process is completed
         $msg = "<i>" . $this->pathInfo["basename"] . "</i>: ";
-        $msgExt = "";
+        // extension if any special cases
+        $msgExt = ""; 
         
+        // special case: file already exists, then change the filename
         if (file_exists($this->targetPath)){
             $this->targetPath = $this->changeFileName($this->targetPath, $this->pathInfo);
             $msgExt = ", due to duplicate, file name changed to " . $this->targetPath;
@@ -112,7 +166,7 @@ class File extends Entity{
         if (move_uploaded_file($this->tmpPath, $this->targetPath)){
             $msg .= "File has successfully been uploaded" . $msgExt . "<br>";
         }else{
-            $msg .= "<b>Failed to upload file</b> <br>";
+            $msg .= "<b>Failed to upload file</b> <i>" . basename($this->targetPath) . "</i><br>";
             echo $msg;
             return 0;
         }
@@ -122,8 +176,9 @@ class File extends Entity{
     }
 
     /**
-     * Utility method to update file name if duplicate file is found
-     * Called by upload()
+     * Utility method to update filename if duplicate file is found
+     * For example, if file name is 'pic.jpg', the new filename is 'pic(1).jpg'.
+     * @see upload
      */
     private function changeFileName($name, $pathInfo){
         $num = 1;
@@ -136,8 +191,11 @@ class File extends Entity{
     }
 
     /**
-     * Binds parameters to prepared statement and executes it
-     * Inherited from Entity abstract class in db_operations.php
+     * The go() function binds parameter to the linked prepared statement and executes it.
+     *
+     * @see blog_form.php - line 71 to 81
+     * 
+     * @global dbconn database connection, used to get lastInsertId
      */
     public function go(){
         $insertMedia = $this->getStatement();
@@ -145,20 +203,25 @@ class File extends Entity{
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
-        echo "File (id: {$lastId}, type: {$this->type}) has successfully been inserted into database<br>";
+        echo "<i>" . basename($this->targetPath) . "</i> has successfully been inserted into database (id: {$lastId}, type: {$this->type})";
     }
 
+    /**
+     * Returns HTML markup string depending on file type
+     */
     public function __toString(){
         $string = "";
         switch($this->type){
             case "image":
-                $string = '<img src="' . addslashes($this->targetPath) . '" height="200px"; ><br>';
+                $string = '<img src="' . addslashes($this->targetPath) . '" height="200px"><br>';
                 break;
             case "video":
-                $string = "video";
+                $string = '<video height="300px" controls>
+                    <source src="' . addslashes($this->targetPath) . '" type="video/' . $this->pathInfo["extension"] . '">
+                    </video>';
                 break;
             case "other":
-                $string = '<a href="' . addslashes($this->targetPath) . '" download>' . $this->path . '</a>';
+                $string = '<a href="' . addslashes($this->targetPath) . '" download>' . basename($this->targetPath) . '</a>';
                 break;
             default:
                 $string = "There is supposed to an element here, but something went wrong (T_T)";

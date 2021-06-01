@@ -5,10 +5,16 @@
         <title>Blog Submit</title>
     </head>
     <body>
+
+        <!-- 
+            Blog Form
+            For me to submit blog entries and linked files
+        -->
+
         <h1> Submit an entry: </h1>
         <form method="POST" enctype="multipart/form-data" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>">
-            <label for="text">Text:</label><br>
-            <textarea name="text" rows="5" cols="40"></textarea><br>
+            <label for="entry">Entry:</label><br>
+            <textarea name="entry" rows="5" cols="40"></textarea><br>
             <label for="files">Upload files:</label><br>
             
             <div>
@@ -26,44 +32,56 @@
         </form>
 
         <?php 
-            
             include 'blog_config.php';
 
             if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-                $text = $_POST["text"];
-                $text = htmlspecialchars($text);
-                $text = new Text($text);
+                // retrieve entry from form 
+                // validate text
+                // create Entity object
+                $entry = $_POST["entry"];
+                $entry = htmlspecialchars($entry);
+                $entry = new Entry($entry);
 
-                $insertText = new InsertStatement($dbconn, 
-                    "INSERT INTO entries(text)
+                // insert Entry into database
+                $insertEntry = new InsertStatement($dbconn, 
+                    "INSERT INTO entry(text)
                     VALUES (?);");
-                $insertText->linkEntity($text);
-                $insertText->execute("Failed to insert text into database");
-                $SUBMISSION_ID = $insertText->getReturn();
+                $insertEntry->linkEntity($entry);
+                $insertEntry->execute("Failed to insert entry into database");
+                
+                $SUBMISSION_ID = $insertEntry->getReturn(); // get the id of Entry
 
+
+                // if entry has attached files
                 if(isset($_FILES['files']) && $_FILES['files']["name"][0] != ""){
                     $files = $_FILES['files'];
                     $filesCount = count($files["name"]);
 
+                    // prepared statement to insert File into database 
                     $insertFile = new InsertStatement($dbconn,
-                        "INSERT INTO media (entry_id, type, path)
+                        "INSERT INTO file (entry_id, type, path)
                         VALUES(?, ?, ?);");
 
                     for ($i = 0; $i < $filesCount; $i++){
+
+                        // get file propertries and get Entity object
                         $fileName = basename($files["name"][$i]);
                         $fileTmpPath = $files["tmp_name"][$i];
                         $file = new File($fileName, $fileTmpPath, $SUBMISSION_ID);
 
-                        // 1. Upload files
-                        // 2. if file upload is successful, then link entities for database insertion.
+                        // Upload files
+                        // If file upload is successful, then link entities for database insertion.
                         if($file->upload()){
                             $insertFile->linkEntity($file);
                         }
                     }
+
+                    // execute prepared statement for all linked entities
                     $insertFile->execute("Failed to insert file into database");
 
                 }
+
             }
         ?>
 
