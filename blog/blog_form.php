@@ -33,14 +33,25 @@
 
                 $text = $_POST["text"];
                 $text = htmlspecialchars($text);
-
                 $text = new Text($text);
-                $text->executeOperation("Failed to insert text into database");
-                $SUBMISSION_ID = $text->getReturn();
+
+                $dbconn = new DBConnection("blog");
+                $dbconn->setStatement(
+                    "INSERT INTO entries(id, text)
+                    VALUES (NULL, ?);"
+                );
+                $dbconn->addEntity($text);
+                $dbconn->executeStatement("Failed to insert text into database");
+                $SUBMISSION_ID = $dbconn->getReturn()[0];
 
                 if(isset($_FILES['files']) && $_FILES['files']["name"][0] != ""){
                     $files = $_FILES['files'];
                     $filesCount = count($files["name"]);
+
+                    $dbconn->setStatement(
+                        "INSERT INTO media (entry_id, type, path)
+                        VALUES(?, ?, ?);"
+                    );
 
                     for ($i = 0; $i < $filesCount; $i++){
                         $fileName = basename($files["name"][$i]);
@@ -48,8 +59,9 @@
                         $file = new File($fileName, $fileTmpPath, $SUBMISSION_ID);
 
                         $file->upload();
-                        $file->executeOperation("Failed to insert " . $fileName . " into database.");
+                        $dbconn->addEntity($file);
                     }
+                    $dbconn->executeStatement("Failed to insert file into database");
 
                 }
             }

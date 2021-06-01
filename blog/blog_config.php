@@ -33,40 +33,6 @@ class FullEntry{
 }
 
 /**
- * Represent the text portion of an blog entry
- */
-class Text extends Entity{
-
-    private $datetime;
-    private $text;
-
-    function __construct($text){
-        global $dbname;
-        parent::__construct($dbname); // connect to database
-
-        $this->text = $text;
-    }
-
-    function setOperation(){
-        $insertText = $this->getConn()->prepare(
-            "INSERT INTO entries(id, text)
-            VALUES (NULL, ?);"
-        );
-        $insertText->execute([$this->text]);
-
-        $this->setReturn($this->getConn()->lastInsertId());
-
-        echo "Text (id: {$this->getReturn()}) has successfully been inserted into database<br>";
-    }
-
-    function __toString(){
-        return 
-        "<i>$this->datetime</i><br>
-        <pre>$this->text</pre>";
-    }
-}
-
-/**
  * Represent picture portion of an blog entry
  */
 class Picture{
@@ -92,6 +58,36 @@ class Picture{
     }
 }
 
+
+/**
+ * Represent the text portion of an blog entry
+ */
+class Text extends Entity{
+
+    private $datetime;
+    private $text;
+
+    function __construct($text){
+        $this->text = $text;
+    }
+
+    function go(){
+        $insertText = $this->dbconn->getStatement();
+        $insertText->execute([$this->text]);
+
+        $lastId = $this->dbconn->getConn()->lastInsertId();
+        $this->dbconn->addReturn($lastId);
+
+        echo "Text (id: {$this->dbconn->getReturn()[0]}) has successfully been inserted into database<br>";
+    }
+
+    function __toString(){
+        return 
+        "<i>$this->datetime</i><br>
+        <pre>$this->text</pre>";
+    }
+}
+
 class File extends Entity{
 
     private $type = "other";
@@ -103,10 +99,7 @@ class File extends Entity{
     /**
      * Sets the return string for displaying in blog entry
      */
-    function __construct($path, $tmpPath, $SUBMISSION_ID){
-        global $dbname;
-        parent::__construct($dbname); // connect to database
-
+    public function __construct($path, $tmpPath, $SUBMISSION_ID){
         $this->targetPath = "images/" . $path;
         $this->pathInfo = pathinfo($this->targetPath);
         $this->tmpPath = $tmpPath;
@@ -122,9 +115,9 @@ class File extends Entity{
     }
 
     /**
-     * Uploads file to images/ folder
+     * Uploads file to 'images/' folder
      */
-    function upload(){
+    public function upload(){
         $msg = "<i>" . $this->pathInfo["basename"] . "</i>: ";
         $msgExt = "";
         
@@ -146,6 +139,10 @@ class File extends Entity{
         return 1;
     }
 
+    /**
+     * Utility method to update file name if duplicate file is found
+     * Called by upload()
+     */
     private function changeFileName($name, $pathInfo){
         $num = 1;
         while(file_exists($name)){
@@ -156,19 +153,20 @@ class File extends Entity{
         return $name;
     }
 
-    function setOperation(){
-        $conn = $this->getConn();
-        $insertMedia = $conn->prepare(
-            "INSERT INTO media (entry_id, type, path)
-            VALUES(?, ?, ?);"
-        );
-        $insertMedia->execute([$this->SUBMISSION_ID, $this->type, $this->pathInfo["basename"]]);
+    /**
+     * Binds parameters to prepared statement and executes it
+     * Inherited from Entity abstract class in db_operations.php
+     */
+    public function go(){
+        $insertMedia = $this->dbconn->getStatement();
+        $insertMedia->execute([$this->SUBMISSION_ID, $this->type, basename($this->targetPath)]);
 
-        echo "File (id: {$conn->lastInsertId()}, type: {$this->type}) has successfully been inserted into database<br>";
+        $lastId = $this->dbconn->getConn()->lastInsertId();
+        echo "File (id: {$lastId}, type: {$this->type}) has successfully been inserted into database<br>";
     }
 
-    function __toString(){
-        return $string;
+    public function __toString(){
+        return "this is a file entity";
     }
 }
 

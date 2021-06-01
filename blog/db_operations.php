@@ -13,23 +13,62 @@ $options = [
 
 abstract class Entity{
 
-    private $conn;
-    private $return;
+    protected $dbconn;
 
-    // see if this can be a constructor
+    function setDBConn($dbconn){
+        $this->dbconn = $dbconn;
+    }
+
+    function getDBConn(){
+        return $this->dbconn;
+    }
+
+    /**
+     * This method is for database-altering functions.
+     */
+    abstract function go();
+
+}
+
+class DBConnection{
+
+    private $conn;
+    private $prepStat;
+    private $entityArr = []; // check if need to initialize?
+    private $return = [];
+
     function __construct($dbname){
         global $servername, $username, $password, $options;
         $dsn = "mysql:host=$servername;dbname=$dbname";
         $this->conn = new PDO($dsn, $username, $password, $options);
     }
 
-    abstract function setOperation();
+    function addEntity($entity){
+        $entity->setDBConn($this); // links entity to this database connection
+        $this->entityArr[] = $entity;
+    }
 
-    function executeOperation($errMsg){
+    function setStatement($sql){
+        $this->prepStat = $this->conn->prepare($sql);
+        $this->entityArr = []; // reset entity array
+    }
+
+    function getStatement(){
+        return $this->prepStat;
+    }
+
+    function executeStatement($errMsg){
         try{
-            $this->setOperation();
+            if (count($entityArr) != 0){
+                foreach($this->entityArr as $entity){
+                    $entity->go();
+                }
+            }else{
+                // directly execute the statement and put the results in return
+                // this should be for select function
+            }
         }catch(PDOException $e){
-            echo $errMsg . ": " . $e->getMessage();
+            echo $errMsg . ": " . $e->getMessage() . "<br>" . $e->getFile() , " - line " . $e->getLine();
         }
     }
 
@@ -37,8 +76,8 @@ abstract class Entity{
         return $this->conn;
     }
 
-    function setReturn($value){
-        return $this->return = $value;
+    function addReturn($value){
+        $this->return[] = $value;
     }
 
     function getReturn(){
@@ -47,13 +86,9 @@ abstract class Entity{
 
 }
 
-//design 1 action
-// insertOperation and selectOperation
-
-// design 2
-// db connection class
-// constructor connects entity or array of entity
-// has set operation method which has the prepared statement, and 
-// calls an execute method in the entity which will bind parameters to the prepared statement
-// if it even has an linked entity
+// DB connection: makes the database connection
+// statement: select, insert
+// Entity: abstract class for any database element
+// database specific entity?
+// binding parameters is always entity specific
 ?>
