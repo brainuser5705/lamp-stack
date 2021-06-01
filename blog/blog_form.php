@@ -42,9 +42,6 @@
                 $insertText->execute("Failed to insert text into database");
                 $SUBMISSION_ID = $insertText->getReturn();
 
-                var_dump($insertText);
-                echo ("submission id is : " . $SUBMISSION_ID);
-
                 if(isset($_FILES['files']) && $_FILES['files']["name"][0] != ""){
                     $files = $_FILES['files'];
                     $filesCount = count($files["name"]);

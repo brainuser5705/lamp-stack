@@ -60,7 +60,7 @@ class Text extends Entity{
         $lastId = $dbconn->getConn()->lastInsertId();
         $insertText->setReturn($lastId);
 
-        echo "Text (id: {$insertText->getReturn()}) has successfully been inserted into database<br>";
+        echo "Text (id: {$lastId}) has successfully been inserted into database<br>";
     }
 
     function __toString(){

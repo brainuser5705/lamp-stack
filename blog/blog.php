@@ -14,20 +14,17 @@
             $getText = new SelectStatement($dbconn,
                 "SELECT id, text, datetime FROM entries",
                 PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Text', ["id","text"]);
-            $getText->execute("Fail to get entries from database");
+            $textArr = $getText->execute("Fail to get entries from database");
 
             $getFiles = new SelectStatement($dbconn,
                 "SELECT path FROM media
                 WHERE media.entry_id = ?");
 
-            // get all entries in database
-            $textArr = $getText->getReturn();
             if ($textArr){
                 foreach ($textArr as $text){
                     $entryId = $text->getId();
                     // get files linked to current entry
-                    $getFiles->execute("Fail to get files from database", [$entryId]);
-                    $files = $getFiles->getReturn();
+                    $files = $getFiles->execute("Fail to get files from database", [$entryId]);
 
                     // turn each return into a File (remember that FETCH_CLASS doesn't work because of the constructor?)
                     $filesArr = [];

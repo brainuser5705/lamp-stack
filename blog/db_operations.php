@@ -36,7 +36,7 @@ abstract class Statement{
     protected $dbconn; // DBConnection object
     protected $rawSQL;
     protected $pdoStatement;
-    private $return;
+    protected $return;
     
     function __construct($dbconn, $sql){
         $this->dbconn = $dbconn;
@@ -111,9 +111,9 @@ class SelectStatement extends Statement{
         $stmt->execute($values);
 
         if ($this->fetchMode == null){ // default is associative array
-            $this->setReturn($stmt->fetchAll());
+            return $stmt->fetchAll();
         }elseif ($this->fetchMode == PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE){
-            $this->setReturn($stmt->fetchAll($this->fetchMode, $this->class, $this->args));
+            return $stmt->fetchAll($this->fetchMode, $this->class, $this->args);
         }
     }
 
