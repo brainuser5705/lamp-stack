@@ -3,6 +3,7 @@
     <head>
         <meta charset="utf-8">
         <title>Blog Submit</title>
+
     </head>
     <body>
 
@@ -28,13 +29,13 @@
 
             <input type="file" name="files[]" multiple><br><br>
             <!-- display a list of files that were selected and allow for deletion -->
-            <input type="submit" value="Submit entry" name="submit">
+            <input type="submit" value="Submit entry" name="submit-entry">
         </form>
 
         <?php 
             include 'blog_config.php';
 
-            if ($_SERVER["REQUEST_METHOD"] == "POST"){
+            if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-entry"])){
 
                 // retrieve entry from form 
                 // validate text
@@ -74,6 +75,8 @@
                         // If file upload is successful, then link entities for database insertion.
                         if($file->upload()){
                             $insertFile->linkEntity($file);
+                        }else{
+                            // delete previous entry
                         }
                     }
 
@@ -83,6 +86,8 @@
                 }
 
             }
+            
+            include 'blog_debug.php';
         ?>
 
     </body>

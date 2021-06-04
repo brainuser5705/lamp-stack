@@ -29,7 +29,6 @@ abstract class Entity{
      * @var statement linked InsertStatement
      */
     protected $statement;
-    // **************************8entity name, show name parameter for error message?
 
     function setStatement($statement){
         $this->statement = $statement;
@@ -107,6 +106,55 @@ abstract class Statement{
 }
 
 /**
+ * This type of statement is one that does not require any linking or processing.
+ * Just execute it.
+ */
+class ExecuteStatement extends Statement{
+
+    function __construct($dbconn, $sql){
+        parent::__construct($dbconn, $sql);
+    }
+
+    function execute($errMsg){
+        try{
+            $stmt = $this->getPDOStatement();
+            $stmt->execute();
+
+        }catch(PDOException $e){
+            echo $errMsg . ": " . $e->getMessage() . "<br>";
+        }
+    }
+
+}
+
+/**
+ * Execute statement but with values to bind
+ */
+class LinkedExecuteStatement extends Statement{
+
+    private $values = [];
+
+    function __construct($dbconn, $sql){
+        parent::__construct($dbconn, $sql);
+    }
+
+    function addValue($value){
+        $this->values[] = $value;
+    }
+
+    function execute($errMsg){
+        try{
+            $stmt = $this->getPDOStatement();
+            foreach($this->values as $value){
+                $stmt->execute($value);
+            }
+        }catch(PDOException $e){
+            echo $errMsg . ": " . $e->getMessage() . "<br>";
+        }
+    }
+}
+
+/**
  * Represents an INSERT statement
  * @uses Entity
  */
@@ -145,7 +193,7 @@ class InsertStatement extends Statement{
                 echo "No entities are linked.";
             }
         }catch(PDOException $e){
-            echo $errMsg . ": " . $e->getMessage() . "<br>" . $e->getFile() , " - line " . $e->getLine();
+            echo $errMsg . ": " . $e->getMessage() . "<br>";
         }
     }
 
@@ -200,7 +248,7 @@ class SelectStatement extends Statement{
                 return $stmt->fetchAll($this->fetchMode, $this->class, $this->args);
             } 
         }catch(PDOException $e){
-            echo $errMsg . ": " . $e->getMessage() . "<br>" . $e->getFile() , " - line " . $e->getLine();
+            echo $errMsg . ": " . $e->getMessage() . "<br>";
         }
     }
 

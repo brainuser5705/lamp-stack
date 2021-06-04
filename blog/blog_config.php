@@ -203,7 +203,7 @@ class File extends Entity{
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
-        echo "<i>" . basename($this->targetPath) . "</i> has successfully been inserted into database (id: {$lastId}, type: {$this->type})";
+        echo "<i>" . basename($this->targetPath) . "</i> has successfully been inserted into database (id: {$lastId}, type: {$this->type})<br>";
     }
 
     /**
@@ -218,10 +218,10 @@ class File extends Entity{
             case "video":
                 $string = '<video height="300px" controls>
                     <source src="' . addslashes($this->targetPath) . '" type="video/' . $this->pathInfo["extension"] . '">
-                    </video>';
+                    </video><br>';
                 break;
             case "other":
-                $string = '<a href="' . addslashes($this->targetPath) . '" download>' . basename($this->targetPath) . '</a>';
+                $string = '<a href="' . addslashes($this->targetPath) . '" download>' . basename($this->targetPath) . '</a><br>';
                 break;
             default:
                 $string = "There is supposed to an element here, but something went wrong (T_T)";
