@@ -1,4 +1,4 @@
-<h1>Debugging Dashboard</h1>
+<h1>Entry Dashboard</h1>
 <?php //include 'blog_config.php'; ?>
 <!--
     1. Remove all content in blog database, remove all files in images.
@@ -76,7 +76,8 @@
             }
 
             // refreshes the page to show updated database
-            header("Refresh:0"); 
+            header("Refresh:0");
+            die();
 
         }elseif (isset($_POST["select-delete"])){
             
@@ -99,6 +100,7 @@
 
             // refreshes the page to show updated database
             header("Refresh:0");
+            die();
             
 
         }elseif (isset($_POST["reset-id"])){

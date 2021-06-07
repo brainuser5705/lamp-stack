@@ -57,4 +57,4 @@
     
 ?>
 
-<a href="random.php">Get a random entry!</a>
+<a href="random-blog.php">Get a random entry!</a>

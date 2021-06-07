@@ -1,6 +1,6 @@
 <?php
 
-include 'db_operations.php';
+include '../abstraction/database.php';
 $dbname = "blog";
 
 /**

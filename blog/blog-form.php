@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Blog Submit</title>
+        <title>Blog Form</title>
 
     </head>
     <body>
@@ -32,8 +32,15 @@
             <input type="submit" value="Submit entry" name="submit-entry">
         </form>
 
-        <?php 
-            include 'blog_config.php';
+        <?php
+            include 'blog-models.php';
+            session_start();
+
+            // only allow access if admin is login
+            if (!isset($_SESSION["admin"]) || !($_SESSION["admin"])){
+                header("Location: ../login.php");
+                die();
+            }
 
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-entry"])){
 
@@ -87,8 +94,12 @@
 
             }
             
-            include 'blog_debug.php';
+            include 'blog-debug.php';
+
         ?>
+
+        <a href="blog.php">View blog</a><br>
+        <a href="../logout.php">Log out</a>
 
     </body>
 </html>
