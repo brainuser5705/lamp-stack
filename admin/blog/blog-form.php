@@ -33,7 +33,8 @@
         </form>
 
         <?php
-            include 'blog-models.php';
+            include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
+            include $_SERVER['DOCUMENT_ROOT'] . '/blog/config/blog-models.php';
             session_start();
 
             // only allow access if admin is login
@@ -98,8 +99,8 @@
 
         ?>
 
-        <a href="blog.php">View blog</a><br>
-        <a href="../logout.php">Log out</a>
+        <a href="/blog/">View blog</a><br>
+        <a href="/admin/logout.php">Log out</a>
 
     </body>
 </html>

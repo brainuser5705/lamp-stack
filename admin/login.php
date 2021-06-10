@@ -35,7 +35,7 @@
                         if($login){
                             session_regenerate_id();
                             $_SESSION["admin"] = TRUE;
-                            header("Location: admin/dashboard.html");
+                            header("Location: /admin/dashboard.html");
                         }else{
                             echo "Wrong username or password.";
                         }

@@ -11,6 +11,6 @@
     
 ?>
 
-<br><a href="blog.php">View blog</a>
+<br><a href="/blog/">View blog</a>
 <br><a href="login.php">Log in</a>
 

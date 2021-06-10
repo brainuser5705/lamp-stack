@@ -1,6 +1,5 @@
 <?php
 
-include '../abstraction/database.php';
 $dbname = "blog";
 
 /**
@@ -54,7 +53,8 @@ class Entry extends Entity{
     private $datetime;
     private $text;
 
-    function __construct($text, $id=null, $datetime=null){
+    // all parameters are null because when db fetch into entry, it does not need an required parameters
+    function __construct($text=null, $id=null, $datetime=null){
         $this->id = $id;
         $this->text = $text;
         $this->datetime = $datetime;
@@ -63,6 +63,16 @@ class Entry extends Entity{
     function getId(){
         return $this->id;
     }
+
+    /* testing */
+    public function getDatetime(){
+        return $this->datetime;
+    }
+
+    public function getText(){
+        return $this->text;
+    }
+
 
     /**
      * The go() function binds parameter to the linked prepared statement and executes it.
@@ -227,6 +237,10 @@ class File extends Entity{
                 $string = "There is supposed to an element here, but something went wrong (T_T)";
         }
         return $string;;
+    }
+
+    public function getTargetPath(){
+        return $this->targetPath;
     }
 }
 

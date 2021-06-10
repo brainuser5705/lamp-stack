@@ -7,7 +7,9 @@
     <body>
         <h1>Submit a project: </h1>
         <?php
-            include 'project-models.php';
+            include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
+            include $_SERVER['DOCUMENT_ROOT'] . '/projects/config/project-models.php';
+            
             session_start();
 
             if (!isset($_SESSION["admin"])){
@@ -15,10 +17,12 @@
                 die();
             }
 
-            $icon = $title = $description = $link = null;
+            $icon = $title = $description = $link = $feature = null;
             $titleMsg = $linkMsg = "";
             if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-project"])){
                 
+                // determines whether to use link or file for icon
+                // link takes prescedence
                 if (!empty($_POST["icon-link"])){
                     $icon = sanitize($_POST["icon-link"]);
                 }elseif(!empty($_FILES['icon-file']['name'])){
@@ -40,11 +44,16 @@
                     $linkMsg = "Please enter a link.";
                 }
 
+                if(isset($_POST["feature"])){
+                    $feature = True;
+                }
+
+                // only insert into database if required inputs are filled in
                 if (!empty($_POST["title"]) && !empty($_POST["link"])){
-                    $project = new Project($title, $link, $icon, $description);
+                    $project = new Project($title, $link, $icon, $description, $feature);
                     $insertProject = new InsertStatement($dbconn,
-                        "INSERT INTO project (icon, title, description, link)
-                        VALUES(?, ?, ?, ?);");
+                        "INSERT INTO project (icon, title, description, link, feature)
+                        VALUES(?, ?, ?, ?, ?);");
                     $insertProject->linkEntity($project);
                     $insertProject->execute("Fail to insert project into database<br>");
 
@@ -95,10 +104,16 @@
             <input type="text" name="link">
             <span>* <?php echo $linkMsg; ?></span><br>
 
+            <label for="feature">Feature: </label>
+            <input type="checkbox" name="feature">
+
             <input type="submit" name="submit-project" value="Submit project">
         </form>
 
         <?php include 'project-debug.php' ?>
+
+        <a href="/projects/">View projects</a><br>
+        <a href="/admin/logout.php">Log out</a>
 
     </body>
 </html>

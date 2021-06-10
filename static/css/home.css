@@ -1,0 +1,55 @@
+#home-container{
+    display: flex;
+    flex-flow: row wrap;
+}
+
+#home-container-left{
+    flex: 1;
+    margin-right: 2em;
+    min-width: 50%;
+    display: flex;
+    flex-flow: column wrap;
+}
+
+#home-container-right{
+    flex: 2;
+}
+
+#feature-projects{
+    margin-right: 5px;
+    margin-bottom: 20px;
+}
+
+/* status box */
+.status{
+    margin-bottom: 1em;
+}
+
+.status-datetime{
+    font-style: italic;
+    font-size: 0.9em;
+    color: #1060a7;
+}
+
+#status-box{
+    border: 1px solid black;
+    padding: 1em;
+}
+
+#status-box h2{
+    margin: 2px;
+}
+
+/* if screen is 870px or less in width, then flex wrap the divs */
+@media screen and (max-width: 800px){
+
+    #home-container-left{
+        min-width: 100%;
+    }
+
+}
+
+img{
+    max-width: 50%;
+}
+

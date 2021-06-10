@@ -1,0 +1,139 @@
+/* Basic website layout stylesheet */
+
+@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&family=Titillium+Web&display=swap');
+
+html{
+    font-family: 'Titillium Web', sans-serif;
+    font-size: 20px;
+    height: 100%;
+    margin: 0px;
+    padding: 0px;
+}
+
+header{
+    font-family: 'Syne Mono', monospace;
+    text-align: center;
+}
+
+/* Website name */
+#website-name{
+    margin: 2px; /* adding some spacing */
+    /* text-shadow: 0px 2px 5px #1791fc; */
+}
+
+/* navigation bar */
+nav{
+    text-align: center;
+    margin: 20px 0px;
+}
+
+nav a{
+    margin: 0em 1em;
+    font-size: 20px;
+}
+
+hr{
+    margin: 0px;
+}
+
+body{
+    width: 100%;
+    height: calc(100% - 20px); /* 100% height of html but minus 20px because of top margin */
+    margin: 0px;
+    margin-top: 20px;
+}
+
+/* visible will grow if content exceeds body height */
+.visible{
+    min-height: calc(100% - 84px); /* minus 84px because height of footer */
+}
+
+/* adjust the body width depending on the size of the screen */
+
+.visible-body{
+    width: 65vw;
+    margin: 10px auto;
+}
+
+/* the actual text gets some padding */
+main{
+    padding: 20px 10px;
+}
+
+@media screen and (max-width: 1200px){
+    
+    .visible-body{
+        width: 75vw;
+    }
+    
+}
+
+@media screen and (max-width: 1050px){
+    
+    .visible-body{
+        width: 80vw;
+    }
+    
+}
+
+/* screen size below 500px will get width of 95vw */
+@media screen and (max-width: 500px){
+    html{
+        font-size: 18px;
+    }
+
+    nav{
+        font-size: 16px;
+        margin: 5px 0px;
+    }
+
+    nav a{
+        margin: 0em 0.5em;
+        font-size: 20px;
+    }
+
+    .visible{
+        min-height: calc(100% - 79.5px); /* need to change this because of footer size change (due to font change) */
+    }
+
+    .visible-body{
+        width: 95vw;
+    }
+
+    main{
+        padding: 0px 10px;
+    }
+    
+}
+
+/* footer */
+
+footer{
+    width: 100%;
+    color:white;
+    text-align: center;
+    padding: 10px 0px;
+    background-color: #1060a7;
+}
+
+/* github icon */
+
+#github-light, #github-dark{
+    width: 25px; /* icon size */
+    display: inline-block; /* how it displays in the footer */
+}
+
+/* if not hovering, only light icon is displayed */
+#github-dark{
+    display: none;
+}
+
+footer a:hover #github-dark{
+    display: inline;
+    position: absolute; /* so it displays over the light icon */
+    z-index: 99;
+}
+
+main > div{
+    margin: 10px;
+}

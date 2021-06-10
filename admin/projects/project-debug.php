@@ -1,5 +1,5 @@
 <h1>Project Dashboard</h1>
-<?php //include 'blog_config.php'; ?>
+<?php //include 'project-models.php'; ?>
 <!--
     1. Remove all content in blog database, remove all files in images.
     2. List of all entries, checkbox to select, and delete.

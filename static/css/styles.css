@@ -1,0 +1,28 @@
+/* Global links */
+a{
+    text-decoration: none;
+    color: #1060a7;
+}
+
+a:visited{
+    color: #1060a7;
+}
+
+a:hover{
+    color: #1791fc;
+}
+
+/* h1 would be the title */
+h1{
+    margin: 2px;
+}
+
+p{
+    color: #1060a7;
+    text-align: justify;
+    margin: 0px 10px;
+}
+
+img{
+    max-width: 100%;
+}

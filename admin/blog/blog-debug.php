@@ -115,7 +115,7 @@
                 "ALTER TABLE file AUTO_INCREMENT = 0;");
             $resetAutoFile->execute("Cannot reset auto increment value for <code>'file'</code> table");  
 
-            echo "Auto-increment id reset to 0 for entry and file tables";
+            echo "Auto-increment id reset to 0 for entry and file tables<br>";
         }
 
     }

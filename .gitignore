@@ -5,5 +5,8 @@ webalizer/
 applications.html
 bitnami.css
 favicon.ico
-index.php
+/index.php
 blog/images/
+abstraction/debug.php
+projects/icons/
+static/images
