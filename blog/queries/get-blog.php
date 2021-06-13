@@ -1,12 +1,13 @@
 <?php 
 
-    include 'config/blog-models.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/blog/config/blog-models.php';
 
     function getBlog(){
         global $dbconn;
 
         $getAllEntry = new SelectStatement($dbconn,
-            "SELECT * FROM entry;");
+            "SELECT * FROM entry 
+             ORDER BY datetime DESC;");
         $getAllEntry->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Entry');
         $entryArr = $getAllEntry->execute("Fail to get entries from database");
 
@@ -32,7 +33,7 @@
             return ["content"=>$fullEntryArr]; // returning an associative array
 
         }else{
-            return "No entries yet.";
+            return ["content"=>new Entry("No entries yet.")];
         }
 
     }

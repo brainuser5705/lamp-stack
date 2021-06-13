@@ -2,7 +2,10 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Testing</title>
+        <title>Login</title>
+        <link rel="shortcut icon" type="image/jpg" href="https://cdn.iconscout.com/icon/free/png-512/b-characters-character-alphabet-letter-36044.png"/>
+        <link rel="stylesheet" href="/static/css/layout.css">
+        <link rel="stylesheet" href="/static/css/styles.css">
     <head>
     <body>
         <?php

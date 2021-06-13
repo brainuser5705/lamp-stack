@@ -4,19 +4,42 @@
     color: #1060a7;
 }
 
-#blog-statuses{
-    display: flex;
-    flex-flow: row wrap;
-}
-
 .status{
-    border: 1px solid black;
     padding: 10px;
     width: max-content;
+    max-width: 100%;
     margin: 5px;
 }
 
 img{
-    width: 100px;
+    max-width: 20%;
 }
 
+main{
+    width: 40vw;
+    margin: auto;
+}
+
+@media screen and (max-width: 900px){
+    
+    main{
+        width: 70vw;
+    }
+    
+}
+
+@media screen and (max-width: 600px){
+    
+    main{
+        width: 80vw;
+    }
+    
+}
+
+@media screen and (max-width: 370px){
+    
+    main{
+        width: 90vw;
+    }
+    
+}

@@ -10,12 +10,19 @@
      * @return - output containing the HTML markup, else an error message if no template file is found
      * 
      */
-    function render($templateName, $variables=null, $callback=null){
+    function render($templateName, $variables=null){
 
-        if (isset($variables) || isset($callback)){
-            $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/templates/' . $templateName;
-        }else{
-            $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/static/html/' . $templateName;
+        $extension = pathinfo($templateName)["extension"];
+        switch($extension){
+            case "php":
+                $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/templates/' . $templateName;
+                break;
+            case "html":
+                $templatePath = $_SERVER['DOCUMENT_ROOT'] . $templateName;
+                break;
+            default:
+                $templatePath = "";
+                break;
         }
         
         if (file_exists($templatePath)){
@@ -24,7 +31,7 @@
                 extract($variables);
             }
 
-            ob_start($callback); // saves output in memory
+            ob_start(); // saves output in memory
             //callback would be the the query stuff
             include $templatePath;
             return ob_get_clean();

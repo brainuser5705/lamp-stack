@@ -2,23 +2,29 @@
 
 <div id="blog-statuses">
     <?php
-        foreach($content as $status){
 
-            extract($status);
+        if(is_array($content)){
+           foreach($content as $status){
 
-            echo  '<div class="status">
-                    <div class="status-datetime">' . $entry->getDatetime() . '</div>
-                    <div class="status-text">' . $entry->getText() . '</div>
-                    <div class="status-files">';
-                
-            foreach($files as $file){
-                echo '<img src="/blog/' . $file->getTargetPath() . '">';
-            }
+                extract($status);
+
+                echo  '<div class="status">
+                        <div class="status-datetime">' . $entry->getDatetime() . '</div>
+                        <div class="status-text">' . $entry->getText() . '</div>
+                        <div class="status-files">';
+                    
+                foreach($files as $file){
+                    echo '<img src="/blog/images/' . $file->getPath() . '">';
+                }
 
 
-            echo '</div></div>'; // first one for files div, second one for status div
+                echo '</div></div> <hr>'; // first one for files div, second one for status div
 
+            } 
+        }else{
+            echo 'No entries yet';
         }
+        
 
     ?>
 </div>

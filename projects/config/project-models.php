@@ -1,18 +1,17 @@
 <?php
 
-$dbname = "project";
 $dbconn = new DBConnection("project");
 
 class Project extends Entity{
 
-    private $icon;
+    private $id;
     private $title;
     private $description;
     private $link;
     private $feature;
 
-    public function __construct($title, $link, $icon=null, $description=null, $feature = False){
-        $this->icon = $icon;
+    public function __construct($title, $link, $feature, $description="", $id=null){
+        $this->id = $id;
         $this->title = $title;
         $this->description = $description;
         $this->link = $link;
@@ -21,23 +20,11 @@ class Project extends Entity{
 
     public function go(){
         $insertProject = $this->getStatement();
-        $insertProject->getPDOStatement()->execute([$this->icon, $this->title, $this->description, $this->link, $this->feature]);
+        $insertProject->getPDOStatement()->execute([$this->title, $this->description, $this->link, $this->feature]);
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
-        echo "<code>" . $this->title . "</code> <i>(id: " . $lastId . ")</i> has successfully been inserted into database<br>"; 
-    }
-
-    public function __toString(){
-        return '<span class="project-link">
-                <img height="30px" width="30px" src="' . $this->icon . '" > 
-                <a href="' . $this->link . '"><b>' . $this->title . '</b></a>
-                <i>' . $this->description . '</i><span>';
-    }
-
-
-    public function getIcon(){
-        return $this->icon;
+        $insertProject->setReturn($lastId);
     }
 
     public function getTitle(){
@@ -50,6 +37,10 @@ class Project extends Entity{
 
     public function getLink(){
         return $this->link;
+    }
+
+    public function getId(){
+        return $this->id;
     }
 
 }

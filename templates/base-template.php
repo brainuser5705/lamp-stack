@@ -31,7 +31,7 @@
                     <hr>
                     <a href="\home.php">Home</a>
                     <a href="\projects">Projects</a>
-                    <a href="\about.php">About</a>
+                    <a href="\blog">Statuses</a>
                     <hr>
                 </nav>
     

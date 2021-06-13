@@ -10,24 +10,24 @@
              ORDER BY datetime DESC
              LIMIT 1;");
         $getStatus->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Entry');
-        $status = $getStatus->execute("Fail to get entry from database")[0];
+        $status = $getStatus->execute("Fail to get entry from database");
 
         $getFiles = new SelectStatement($dbconn,
             "SELECT path FROM file WHERE entry_id = ?");
 
-        if ($status){
-            $id = $status->getId();
+        if ($status){ // if array exists
+            $id = $status[0]->getId();
             $files = $getFiles->execute("Fail to get files from database", [$id]);
 
             $filesArr = [];
             foreach($files as $file){
-                $fileArr[] = new File($file[0]); //$file[0] is the path
+                $filesArr[] = new File($file[0]); //$file[0] is the path
             }
 
-            return ["status"=>$status, "files"=>$filesArr];
+            return ["status"=>$status[0], "files"=>$filesArr];
         }
 
-        return "No entries yet";
+        return ["status"=>new Entry("No entries yet")];
     }
 
 

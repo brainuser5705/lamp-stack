@@ -7,43 +7,6 @@ $dbname = "blog";
  */
 $dbconn = new DBConnection("blog");
 
-
-/**
- * Display text and files in blog page
- */
-class FullEntry{
-    
-    private $entryObj; 
-    
-    /**
-     * @var filesArr all File objects attaches to this entry
-     */
-    private $filesArr;
-
-    function __construct($entryObj, $filesArr){
-        $this->entryObj = $entryObj;
-        $this->filesArr = $filesArr;
-    }
-
-    /**
-     * Compiles all the File objects HTML into a single string
-     */
-    function compilePictures(){
-        $html = "";
-        if (!empty($this->filesArr)){
-            foreach($this->filesArr as $file){
-                $html .= $file;
-            }
-        }
-        return $html;
-    }
-
-    function __toString(){
-        return '<div class="blog-entry">' . $this->entryObj . $this->compilePictures() . '</div>';
-    }
-
-}
-
 /**
  * Represent the Entry part of a blog entry
  */
@@ -92,15 +55,8 @@ class Entry extends Entity{
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
         $insertEntry->setReturn($lastId);
-
-        echo "Entry (id: {$lastId}) has successfully been inserted into database<br>";
     }
 
-    function __toString(){
-        return 
-        "<i>$this->datetime</i><br>
-        <pre>$this->text</pre>";
-    }
 }
 
 
@@ -140,7 +96,7 @@ class File extends Entity{
      * Processes path received from database and assigns to attributes
      */
     public function __construct($path, $tmpPath=null, $SUBMISSION_ID=null){
-        $this->targetPath = "images/" . $path;
+        $this->targetPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/images/" . $path;
         $this->pathInfo = pathinfo($this->targetPath);
         $this->tmpPath = $tmpPath;
     
@@ -160,11 +116,6 @@ class File extends Entity{
      * @uses changeFileName
      */
     public function upload(){
-
-        // message to send when upload process is completed
-        $msg = "<i>" . $this->pathInfo["basename"] . "</i>: ";
-        // extension if any special cases
-        $msgExt = ""; 
         
         // special case: file already exists, then change the filename
         if (file_exists($this->targetPath)){
@@ -174,15 +125,10 @@ class File extends Entity{
 
         // uploading the file and send confirmation message
         if (move_uploaded_file($this->tmpPath, $this->targetPath)){
-            $msg .= "File has successfully been uploaded" . $msgExt . "<br>";
-        }else{
-            $msg .= "<b>Failed to upload file</b> <i>" . basename($this->targetPath) . "</i><br>";
-            echo $msg;
-            return 0;
+            return 1;
         }
 
-        echo $msg;
-        return 1;
+        return 0;
     }
 
     /**
@@ -193,7 +139,7 @@ class File extends Entity{
     private function changeFileName($name, $pathInfo){
         $num = 1;
         while(file_exists($name)){
-            $name = "images/" . $pathInfo["filename"] . "($num)." . $pathInfo["extension"];
+            $name = $_SERVER['DOCUMENT_ROOT'] . "/blog/images/" . $pathInfo["filename"] . "($num)." . $pathInfo["extension"];
             $num++;
         }
         
@@ -213,34 +159,10 @@ class File extends Entity{
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
-        echo "<i>" . basename($this->targetPath) . "</i> has successfully been inserted into database (id: {$lastId}, type: {$this->type})<br>";
     }
 
-    /**
-     * Returns HTML markup string depending on file type
-     */
-    public function __toString(){
-        $string = "";
-        switch($this->type){
-            case "image":
-                $string = '<img src="' . addslashes($this->targetPath) . '" height="200px"><br>';
-                break;
-            case "video":
-                $string = '<video height="300px" controls>
-                    <source src="' . addslashes($this->targetPath) . '" type="video/' . $this->pathInfo["extension"] . '">
-                    </video><br>';
-                break;
-            case "other":
-                $string = '<a href="' . addslashes($this->targetPath) . '" download>' . basename($this->targetPath) . '</a><br>';
-                break;
-            default:
-                $string = "There is supposed to an element here, but something went wrong (T_T)";
-        }
-        return $string;;
-    }
-
-    public function getTargetPath(){
-        return $this->targetPath;
+    public function getPath(){
+        return basename($this->targetPath);
     }
 }
 

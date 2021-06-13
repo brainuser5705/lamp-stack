@@ -15,4 +15,14 @@
         return ["label"=>$label, "projects"=>$projectsArr];
     }
 
+    // get both features and other projects
+    function getAllProjects(){
+        return ["projects"=>array_merge
+                (
+                    getProjects(False)["projects"], 
+                    getProjects(True)["projects"]
+                )
+            ];
+    }
+
 ?>

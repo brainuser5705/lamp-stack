@@ -10,8 +10,10 @@
 
     <div class="status-files">
         <?php 
-            foreach($files as $file){
-                echo '<img src="../blog/' . $file->getTargetPath() . '">';
+            if(isset($files)){
+                foreach($files as $file){
+                    echo '<img src="/blog/images/' . $file->getPath() . '">';
+                }
             }
         ?>
     </div>

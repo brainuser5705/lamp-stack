@@ -51,18 +51,19 @@ body{
 /* adjust the body width depending on the size of the screen */
 
 .visible-body{
-    width: 65vw;
-    margin: 10px auto;
+    width: 100%;
 }
 
 /* the actual text gets some padding */
 main{
+    width: 65vw;
     padding: 20px 10px;
+    margin: 10px auto;
 }
 
 @media screen and (max-width: 1200px){
     
-    .visible-body{
+    main{
         width: 75vw;
     }
     
@@ -70,7 +71,7 @@ main{
 
 @media screen and (max-width: 1050px){
     
-    .visible-body{
+    main{
         width: 80vw;
     }
     
@@ -96,7 +97,7 @@ main{
         min-height: calc(100% - 79.5px); /* need to change this because of footer size change (due to font change) */
     }
 
-    .visible-body{
+    main{
         width: 95vw;
     }
 
