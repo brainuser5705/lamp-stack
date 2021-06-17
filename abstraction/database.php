@@ -101,7 +101,7 @@ abstract class Statement{
     /**
      * Each subclass of Statement has its own execution of the PDOStatment.
      */
-    abstract function execute($errMsg);
+    abstract function execute($errMsg="Error has occured");
 
 }
 
@@ -115,7 +115,7 @@ class ExecuteStatement extends Statement{
         parent::__construct($dbconn, $sql);
     }
 
-    function execute($errMsg){
+    function execute($errMsg="Error has occured"){
         try{
             $stmt = $this->getPDOStatement();
             $stmt->execute();
@@ -142,7 +142,7 @@ class LinkedExecuteStatement extends Statement{
         $this->values[] = $value;
     }
 
-    function execute($errMsg){
+    function execute($errMsg="Error has occured"){
         try{
             $stmt = $this->getPDOStatement();
             foreach($this->values as $value){
@@ -183,7 +183,7 @@ class InsertStatement extends Statement{
      * @see Entity's go()
      * @throws PDOException if PDOStatement binding or execution fails
      */
-    function execute($errMsg){
+    function execute($errMsg="Error has occured"){
         try{
             if (count($this->entityArr) != 0){
                 foreach($this->entityArr as $entity){
@@ -223,7 +223,7 @@ class SelectStatement extends Statement{
         parent::__construct($dbconn, $sql);
     }
 
-    function setFetchMode($fetchMode, $class, $args=null){
+    function setFetchMode($fetchMode, $class=null, $args=null){
         $this->fetchMode = $fetchMode;
         $this->class = $class;
         $this->args = $args;
@@ -237,13 +237,16 @@ class SelectStatement extends Statement{
      * 
      * @throws PDOException if fetching fails, return error message
      */
-    function execute($errMsg, $values=[]){
+    function execute($errMsg="Error has occured", $values=[]){
         try{
             $stmt = $this->getPDOStatement();
             $stmt->execute($values);
 
+            // for some reason, it gotta be like this
             if ($this->fetchMode == null){ // default is returning numeric array
                 return $stmt->fetchAll();
+            }elseif ($this->fetchMode == PDO::FETCH_ASSOC){
+                return $stmt->fetchAll($this->fetchMode);
             }elseif ($this->fetchMode == PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE){
                 return $stmt->fetchAll($this->fetchMode, $this->class, $this->args);
             } 

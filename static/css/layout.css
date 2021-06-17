@@ -135,6 +135,23 @@ footer a:hover #github-dark{
     z-index: 99;
 }
 
-main > div{
-    margin: 10px;
+/* about me icon */
+
+#about-light, #about-dark{
+    display: inline-block; /* how it displays in the footer */
+}
+
+/* if not hovering, only light icon is displayed */
+#about-dark{
+    display: none;
+}
+
+footer a:hover #about-dark{
+    display: inline;
+    position: absolute; /* so it displays over the light icon */
+    z-index: 99;
+}
+
+.footer-icon{
+    margin: 5px;
 }

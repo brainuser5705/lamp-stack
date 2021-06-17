@@ -1,6 +1,6 @@
 <?php
 
-$dbconn = new DBConnection("project");
+$dbconn = new DBConnection("website");
 
 class Project extends Entity{
 
@@ -8,23 +8,27 @@ class Project extends Entity{
     private $title;
     private $description;
     private $link;
-    private $feature;
+    private $type;
 
-    public function __construct($title, $link, $feature, $description="", $id=null){
-        $this->id = $id;
+    public function __construct($title, $description, $link, $type, $id=null){
+        $this->id = $id; // null value for auto-increment
         $this->title = $title;
         $this->description = $description;
         $this->link = $link;
-        $this->feature = $feature;
+        $this->type = $type;
     }
 
     public function go(){
         $insertProject = $this->getStatement();
-        $insertProject->getPDOStatement()->execute([$this->title, $this->description, $this->link, $this->feature]);
+        $insertProject->getPDOStatement()->execute([$this->title, $this->description, $this->link, $this->type]);
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
         $insertProject->setReturn($lastId);
+    }
+
+    public function getId(){
+        return $this->id;
     }
 
     public function getTitle(){
@@ -39,8 +43,8 @@ class Project extends Entity{
         return $this->link;
     }
 
-    public function getId(){
-        return $this->id;
+    public function getType(){
+        return $this->type;
     }
 
 }
