@@ -8,3 +8,5 @@ favicon.ico
 
 static/images/
 about/greeting.php
+/files/
+/parsedown-1.7.4

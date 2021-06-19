@@ -30,7 +30,7 @@
                 <nav>
                     <hr>
                     <a href="\projects">Projects</a>
-                    <a href="\blog">Statuses</a>
+                    <a href="\status-updates">Statuses</a>
                     <hr>
                 </nav>
     

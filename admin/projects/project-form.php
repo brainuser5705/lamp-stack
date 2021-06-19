@@ -38,7 +38,7 @@
 <?php
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-project"])){
-        
+
         $title = sanitize($_POST["title"]);
         $description = sanitize($_POST["description"]);
         $link = sanitize($_POST["link"]);
@@ -67,7 +67,9 @@
         $insertProject->linkEntity($project);
         $insertProject->execute("Fail to insert project into database");
 
-        echo "Successfully inserted project (id: " . $insertProject->getReturn() . ") into database";
+        // confirmation message signifying success!
+        $alertMessage = "Successfully inserted project (id: " . $insertProject->getReturn() . ") into database";        
+
     }
 
     function sanitize($value){

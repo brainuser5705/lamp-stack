@@ -18,6 +18,8 @@ $options = [
     PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_NUM,
 ];
 
+// path to files folder storing all uploaded files
+$FOLDER_PATH = $_SERVER['DOCUMENT_ROOT'] . '/files/';
 
 /**
  * Represents database model (or object of a table in database)

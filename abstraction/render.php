@@ -36,7 +36,7 @@
             return ob_get_clean(); 
         }
 
-        return 'No template file found <code>' . $templatePath . '</code>';
+        return 'No template file found <code>' . $templateName . '</code>';
         
     }
 
