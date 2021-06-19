@@ -17,7 +17,8 @@
             foreach($statuses as $status){
                 echo '<input type="checkbox" name="' . $status["id"] . '">';
                 $statusLabel = "{ <i>id</i>: " . $status["id"] . " , <i>datetime</i>: " . $status["datetime"] . "}";
-                echo '<label for="' . $status["id"] .'">' . $statusLabel . "</label><br>";
+                echo '<label for="' . $status["id"] .'">' . $statusLabel . "</label>";
+                echo "<br>";
             }
     ?>
 
@@ -77,14 +78,6 @@
             $alertMessage = "Auto-increment id reset to 0 for status table";
         }
 
-    }
-
-    function deleteFile($filename){
-        $target_dir = $FOLDER_PATH . $filename;
-        if (file_exists($target_dir)){
-            unlink($target_dir);
-            $alertMessage .= "Successfully deleted file: " . $filename;
-        }
     }
 
 ?>
