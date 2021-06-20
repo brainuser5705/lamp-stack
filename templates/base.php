@@ -21,7 +21,7 @@
         <div class="visible">
             
             <header>
-                <h1 id="website-name"><a href="\home.php">brainuser5705</a></h1>
+                <h1 id="website-name">brainuser5705</h1>
                 <div>the internet home of Ashley Liew</div>
             </header>
 

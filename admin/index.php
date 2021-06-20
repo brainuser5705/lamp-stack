@@ -9,6 +9,12 @@
     //     die();
     // }
 
+    function sanitize($value){
+        $value = trim($value);
+        $value = htmlspecialchars($value);
+        return $value;
+    }
+
     $alertMessage = "";
 
     include 'files-debug.php';
@@ -20,8 +26,6 @@
     include $_SERVER['DOCUMENT_ROOT'] . '/status-updates/su-models.php';
     include 'status-updates/su-form.php';
     include 'status-updates/su-debug.php';
-    
-    
 
     if ($alertMessage != ""){
         // alert any confirmation messages at the end of submission

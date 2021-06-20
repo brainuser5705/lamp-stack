@@ -13,7 +13,7 @@
         Current uploaded files:
         <ul>
             <?php
-                $files = array_diff(scandir($FOLDER_PATH), ['..','.']);
+                $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
                 foreach($files as $file){
                     echo "<li>{$file}</li>"; 
                 }
@@ -44,30 +44,10 @@
         $status_id = $insertStatus->getReturn(); // get the id of status
         $alertMessage .= "Status (id: {$status_id}) has successfully been inserted into database\\n";
 
-        // if status has attached files
-        if(isset($_FILES['files']) && $_FILES['files']["name"][0] != ""){
-            $files = $_FILES['files'];
-            $filesCount = count($files["name"]);
-
-            for ($i = 0; $i < $filesCount; $i++){
-
-                // get file propertries and get Entity object
-                $fileName = basename($files["name"][$i]);
-                $fileTmpPath = $files["tmp_name"][$i];
-                $file = new File($fileName, $fileTmpPath);
-
-                // Upload files and add confirmation message
-                $alertMessage .= basename($file->getPath()) . ": "; 
-                if($file->upload()){
-                    $alertMessage .= "File has successfully been uploaded";
-                }else{
-                    $alertMessage .= "Failed to upload";
-                }
-                $alertMessage .= "\\n";
-
-            }
-
-        }
+        $inputName = "files";
+        $folderPath = $SU_FOLDER_PATH;
+        include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/file_upload.php";
+        
     }
 ?>
 

@@ -19,7 +19,86 @@ $options = [
 ];
 
 // path to files folder storing all uploaded files
-$FOLDER_PATH = $_SERVER['DOCUMENT_ROOT'] . '/files/';
+$SU_FOLDER_PATH = $_SERVER['DOCUMENT_ROOT'] . '/status-updates/files/';
+
+/**
+ * Represents attached files to a blog entry
+ */
+class File{
+
+    /**
+     * @var targetPath the file path of file
+     */
+    private $targetPath;
+
+    /**
+     * @var pathInfo the path information of file's path
+     */
+    private $pathInfo;
+
+    /**
+     * @var tmpPath the path of the temporary place where file is stored before uploading
+     */
+    private $tmpPath;
+
+    /**
+     * @var folderPath the path of folder to upload to
+     */
+    private $folderPath;
+
+
+    /**
+     * Processes path received from database and assigns to attributes
+     */
+    public function __construct($path, $folderPath, $tmpPath=null){
+
+        $this->$folderPath = $folderPath;
+        $this->targetPath = $folderPath . $path;
+        $this->pathInfo = pathinfo($this->targetPath);
+        $this->tmpPath = $tmpPath;
+
+    }
+
+    /**
+     * Uploads file to 'images/' folder
+     * @uses changeFileName
+     */
+    public function upload(){
+        
+        // special case: file already exists, then change the filename
+        if (file_exists($this->targetPath)){
+            $this->targetPath = $this->changeFileName($this->targetPath, $this->pathInfo);
+        }
+
+        // uploading the file and send confirmation message
+        if (move_uploaded_file($this->tmpPath, $this->targetPath)){
+            return 1;
+        }
+
+        return 0;
+    }
+
+    /**
+     * Utility method to update filename if duplicate file is found
+     * For example, if file name is 'pic.jpg', the new filename is 'pic(1).jpg'.
+     * @see upload
+     */
+    private function changeFileName($name, $pathInfo){
+
+        $num = 1;
+        while(file_exists($name)){
+            $name = $this->folderPath . $pathInfo["filename"] . "($num)." . $pathInfo["extension"];
+            $num++;
+        }
+        
+        return $name;
+    }
+
+    public function getPath(){
+        return basename($this->targetPath);
+    }
+
+}
 
 /**
  * Represents database model (or object of a table in database)

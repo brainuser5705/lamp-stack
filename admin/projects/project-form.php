@@ -72,11 +72,5 @@
 
     }
 
-    function sanitize($value){
-        $value = trim($value);
-        $value = htmlspecialchars($value);
-        return $value;
-    }
-
 ?>
 

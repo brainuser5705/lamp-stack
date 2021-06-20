@@ -17,8 +17,14 @@ header{
 
 /* Website name */
 #website-name{
+    color: #1060a7;
     margin: 2px; /* adding some spacing */
     /* text-shadow: 0px 2px 5px #1791fc; */
+}
+
+#website-name:hover{
+    color: #1791fc
+    /* random color script here */
 }
 
 /* navigation bar */

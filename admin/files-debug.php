@@ -3,7 +3,7 @@
 <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
     <?php
-        $files = array_diff(scandir($FOLDER_PATH), ['..','.']);
+        $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
         if (!empty($files)){
 
             echo '<div>Choose which files to delete:</div>';
@@ -56,12 +56,14 @@
     }
 
     function deleteFile($filename){
-        global $FOLDER_PATH, $alertMessage;
-        $target_dir = $FOLDER_PATH . $filename;
+        global $SU_FOLDER_PATH, $alertMessage;
+
+        $target_dir = $SU_FOLDER_PATH . $filename;
         if (file_exists($target_dir)){
             unlink($target_dir);
             $alertMessage .= "Successfully deleted file: " . $filename . "\\n";
         }
+        
     }
 
     function convertName($filename){
