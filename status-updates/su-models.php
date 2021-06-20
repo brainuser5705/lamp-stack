@@ -1,11 +1,6 @@
 <?php
 
 /**
- * @var dbconn global connection to database 'website'
- */
-$dbconn = new DBConnection("website");
-
-/**
  * Represent the text of status update
  */
 class Status extends Entity{

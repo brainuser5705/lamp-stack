@@ -1,7 +1,5 @@
 <?php
 
-$dbconn = new DBConnection("website");
-
 class Project extends Entity{
 
     private $id;

@@ -17,6 +17,8 @@
 
     $alertMessage = "";
 
+    include 'blog/blog-form.php';
+
     include 'files-debug.php';
 
     include $_SERVER['DOCUMENT_ROOT'] . '/projects/project-models.php';

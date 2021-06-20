@@ -367,4 +367,9 @@ class DBConnection{
 
 }
 
+/**
+ * @var dbconn global connection to database 'website'
+ */
+$dbconn = new DBConnection("website");
+
 ?>
