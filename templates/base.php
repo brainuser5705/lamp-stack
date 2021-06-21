@@ -31,6 +31,7 @@
                     <hr>
                     <a href="\projects">Projects</a>
                     <a href="\status-updates">Statuses</a>
+                    <a href="\blog">Blog</a>
                     <hr>
                 </nav>
     

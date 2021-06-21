@@ -15,7 +15,7 @@
             "SELECT * FROM projectType;");
         $getTypes->setFetchMode(PDO::FETCH_ASSOC);
         
-        $typesArr = $getTypes->execute("Fail to get project types from database");
+        $typesArr = $getTypes->execute("Failed to get project types from database");
         
         return $typesArr;
     }
@@ -34,7 +34,7 @@
              WHERE type = ?;");
         $getProjects->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Project', ['title', 'description', 'link', 'type']);
 
-        $projectsArr = $getProjects->execute("Fail to get projects from database", [$type]);
+        $projectsArr = $getProjects->execute("Failed to get projects from database", [$type]);
         
         return $projectsArr;
     }

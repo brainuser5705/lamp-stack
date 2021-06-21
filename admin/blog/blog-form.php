@@ -1,3 +1,5 @@
+<h1>Submit a blog entry</h1>
+
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
 
     <label for="title">Title: </label>
@@ -21,19 +23,9 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["submit-blog"])){
 
-        // make folder in /blog, syntax: /blog/Title_Name
-        $origTitle = sanitize($_POST["title"]); // with spaces
-        $title = str_replace(" ", "_", $origTitle);
-
-        $folder = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $title;
-        
-        if (is_dir($folder)){
-            die("Title already taken");
-        }
-
-        mkdir($folder);
-
-        $filename = "";
+        $title = sanitize($_POST["title"]);
+        $description = sanitize($_POST["description"]);
+        $pathToIndex = str_replace(" ", "_", $title);
 
         $validFileType = true;
         // converts text file to html
@@ -46,42 +38,57 @@
             switch(pathinfo($filename)["extension"]){
                 case "html":
                 case "txt":
-                    move_uploaded_file($tmpPath, $folder . "/{$filename}");
+                    $text = nl2br(file_get_contents($tmpPath));
                     break;
                 case "md":
-
                     include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
-                    $Parsedown = new Parsedown;
-
-                    // create new html file
-                    $new_file = fopen($folder . "/text.html", "w") or die("Unable to create text.html file");
-                    fwrite($new_file, $Parsedown->text(file_get_contents($tmpPath)));
-                    fclose($new_file);
-
-                    $file = $new_file;
-                    $filename = "text.html";
-
+                    $Parsedown = new Parsedown();
+                    $text = $Parsedown->text(file_get_contents($tmpPath));
                     break;
-
                 default:
                     $validFileType = false;
-
-            }
+            }  
         }
 
         if ($validFileType){
 
-            // put index.php
-            $templateCode = file_get_contents($_SERVER["DOCUMENT_ROOT"] . "/abstraction/template_index.php");
+            // make folder
+            $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $pathToIndex;
+            mkdir($folderPath) or die("Title already taken");;
 
-            $index = fopen($folder . "/index.php", "w") or die("Unable to open index.php file");
+            // insert status update for blog
+            $statusText =
+                "**New blog update:**" . 
+                '<a href="/blog/' . $title . '">' . $title . '</a>  ' . "\n" .
+                "<i>{$description}</i>";
+
+            $insertStatus = new InsertStatement($dbconn,
+                "INSERT INTO status (markdown)
+                VALUES(?);");
+            $insertStatus->linkEntity(new Status($statusText));
+            $insertStatus->execute("Failed to insert status update into database");
+            $statusId = $insertStatus->getReturn();
+
+            $alertMessage .= "Status update successfully posted\\n";
+            
+            $insertBlog = new InsertStatement($dbconn,
+                "INSERT INTO blog (statusId, title, description, pathToIndex, text)
+                VALUES(?,?,?,?,?);");
+            $blog = new Blog($statusId, $title, $description, $pathToIndex, $text);
+            $insertBlog->linkEntity($blog);
+            $insertBlog->execute("Failed to insert blog into database");
+            $blogId = $insertBlog->getReturn();
+
+            $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
+
+            // put index.php
+            $index = fopen($folderPath . "/index.php", "w") or die("Unable to open index.php file");
             fwrite($index, 
                 "<?php\n\t" .
-                '$PATH_TO_TEXT_HTML = "' . $title . '/' . $filename . '";' . "\n\t" .
-                '$title = "' . $origTitle . '";' . "\n" .
-                "?>\n\n" . $templateCode
+                "\$id = {$blogId};\n\t" .
+                'include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/template_blog_index.php"' . // include the template code
+                "\n?>" 
             );
-            
             fclose($index);
 
             // puts additional files into files folders
@@ -89,27 +96,13 @@
             if (isset($_FILES[$inputName]) && $_FILES[$inputName]["name"][0] != ""){
                 
                 // make files folder
-                mkdir($folder . "/files");
+                mkdir($folderPath . "/files");
 
                 // upload to files folder
-                $folderPath = $folder . "/files/";
+                $folderPath = $folderPath . "/files/";
                 include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/file_upload.php";
             }
             
-            // make a status update for new blog
-            $description = sanitize($_POST["description"]);
-            $statusText =
-                "**New blog update:**" . 
-                '<a href="/blog/' . $title . '">' . $title . '</a>  ' .
-                "<i>{$description}</i>";
-
-            $insertStatus = new LinkedExecuteStatement($dbconn,
-                "INSERT INTO status (markdown)
-                VALUES(?);");
-            $insertStatus->addValue([$statusText]);
-            $insertStatus->execute();
-
-            $alertMessage = "Status update successfully posted";
         }
 
     }

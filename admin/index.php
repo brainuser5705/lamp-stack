@@ -17,6 +17,8 @@
 
     $alertMessage = "";
 
+    include $_SERVER['DOCUMENT_ROOT'] . '/status-updates/su-models.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php';
     include 'blog/blog-form.php';
 
     include 'files-debug.php';
@@ -25,7 +27,7 @@
     include 'projects/project-form.php';
     include 'projects/project-debug.php';
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/status-updates/su-models.php';
+    
     include 'status-updates/su-form.php';
     include 'status-updates/su-debug.php';
 
