@@ -10,3 +10,5 @@ static/images/
 about/greeting.php
 /status-updates/files/
 /parsedown-1.7.4
+
+/blog/*/

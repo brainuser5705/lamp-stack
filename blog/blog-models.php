@@ -29,6 +29,10 @@ class Blog extends Entity{
         $insertBlog->setReturn($lastId);
     }
 
+    public function getId(){
+        return $this->id;
+    }
+
     public function getTitle(){
         return $this->title;
     }
