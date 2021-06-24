@@ -4,20 +4,17 @@
 
     <?php 
 
-        $getStatuses = new SelectStatement($dbconn,
-        "SELECT id, datetime FROM status;");
-        $getStatuses->setFetchMode(PDO::FETCH_ASSOC);
-        $statuses = $getStatuses->execute("Failed to select statuses.");
+        $statuses = getStatuses();
 
-        if (!empty($statuses[0])){ // if there is any status
+        if (!empty($statuses)){ // if there is any status
 
             echo '<div>Choose which status to delete:</div>';
 
             // Create checkbox inputs for each status
             foreach($statuses as $status){
-                echo '<input type="checkbox" name="' . $status["id"] . '">';
-                $statusLabel = "{ <i>id</i>: " . $status["id"] . " , <i>datetime</i>: " . $status["datetime"] . "}";
-                echo '<label for="' . $status["id"] .'">' . $statusLabel . "</label>";
+                echo '<input type="checkbox" name="' . $status->getId() . '">';
+                $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . $status->getDatetime() . "}";
+                echo '<label for="' . $status->getId() .'">' . $label . "</label>";
                 echo "<br>";
             }
     ?>
@@ -47,12 +44,6 @@
             $deleteAll = new ExecuteStatement($dbconn,
                 "DELETE FROM status;"); 
             $deleteAll->execute("Fail to delete entries");
-
-            // // remove all files
-            // $files = array_diff(scandir($FOLDER_PATH), ['..','.']);
-            // foreach($files as $filename){
-            //     deleteFile($filename);
-            // }
 
             $alertMessage = "Successfully deleted all status updates from database";
 

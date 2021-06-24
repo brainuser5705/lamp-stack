@@ -11,7 +11,7 @@
     $projectContent = "";
     foreach(getProjectTypes() as $type){
         // template variables: the type and array of projects of type
-        $projectContent .= render("projects.php", ["type"=>$type, "projects"=>getProjects($type["name"])]);
+        $projectContent .= render("projects.php", ["type"=>$type, "projects"=>getSpecificProjects($type["name"])]);
     }
 
     // render into base template

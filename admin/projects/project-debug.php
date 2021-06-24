@@ -4,20 +4,17 @@
 
     <?php 
 
-        $getProjects= new SelectStatement($dbconn,
-        "SELECT id, title, type FROM project;");
-        $getProjects->setFetchMode(PDO::FETCH_ASSOC);
-        $projects = $getProjects->execute("Failed to select projects.");
+        $projects = getProjects();
 
-        if (!empty($projects[0])){ // if there is any project
+        if (!empty($projects)){ // if there is any project
 
             echo '<div>Choose which project to delete:</div>';
 
             // Create checkbox inputs for each entry
             foreach($projects as $project){
-                echo '<input type="checkbox" name="' . $project["id"] . '">';
-                $label = "{ <i>id</i>: " . $project["id"] . " , <i>title</i>: " . $project["title"] . ", <i>type</i>: " . $project["type"] . "}";
-                echo '<label for="' . $project["id"] .'">' . $label . "</label>";
+                echo '<input type="checkbox" name="' . $project->getId() . '">';
+                $label = "{ <i>id</i>: " . $project->getId() . " , <i>title</i>: " . $project->getTitle() . ", <i>type</i>: " . $project->getType() . "}";
+                echo '<label for="' . $project->getId() .'">' . $label . "</label>";
                 echo '<br>';
             }
     ?>

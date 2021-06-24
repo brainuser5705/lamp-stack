@@ -67,10 +67,15 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
+        $deleteStatus = new LinkedExecuteStatement($dbconn,
+                "DELETE FROM status WHERE id = ?");
+
         if (isset($_POST["reset-blogs"])){
 
             foreach($blogs as $blog){
                 rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
+                $deleteStatus->addValue([$blog->getId()]);
+                $deleteStatus->execute("Fail to delete statuses.");
             }
 
             // delete statement to remove all rows from entry
@@ -82,18 +87,20 @@
             $alertMessage = "Successfully deleted all blogs from database";
 
         }elseif (isset($_POST["blog-select-delete"])){
-            
-            
 
             $deleteSelect = new LinkedExecuteStatement($dbconn,
                 "DELETE FROM blog WHERE id = ?");
-
             foreach($_POST as $k=>$v){
                 if (is_int($k)){
                     $deleteSelect->addValue([$k]);
+                    
                     // delete folder
                     $blog = getBlog($k);
                     rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
+                
+                    // delete status
+                    $deleteStatus->addValue([$blog->getId()]);
+                    $deleteStatus->execute("Fail to delete statuses.");
                 }
             }
             $deleteSelect->execute("Fail to delete entries.");

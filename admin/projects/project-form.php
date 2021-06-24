@@ -12,8 +12,6 @@
 
     <label for="type">Type: </label><br>
     <?php
-
-        include $_SERVER['DOCUMENT_ROOT'] . '/projects/project-queries.php';
         
         foreach(getProjectTypes() as $type){
             $typeName = $type["name"];

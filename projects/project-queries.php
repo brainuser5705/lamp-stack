@@ -26,7 +26,7 @@
      * @param type the type of projects to get
      * @return - array of Project objects 
      */
-    function getProjects($type){
+    function getSpecificProjects($type){
         global $dbconn;
 
         $getProjects = new SelectStatement($dbconn, 
@@ -35,6 +35,18 @@
         $getProjects->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Project', ['title', 'description', 'link', 'type']);
 
         $projectsArr = $getProjects->execute("Failed to get projects from database", [$type]);
+        
+        return $projectsArr;
+    }
+
+    function getProjects(){
+        global $dbconn;
+
+        $getProjects = new SelectStatement($dbconn, 
+            "SELECT * FROM project");
+        $getProjects->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Project', ['title', 'description', 'link', 'type']);
+
+        $projectsArr = $getProjects->execute("Failed to get projects from database");
         
         return $projectsArr;
     }
