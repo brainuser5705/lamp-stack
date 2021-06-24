@@ -21,37 +21,11 @@
         }elseif (isset($_POST["blog-edit-submit"])){ // from php self
             $blogId = $_POST["blog-id"];
         }
-
         $blog = getBlog($blogId);
-
-
-?>
-
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data" method="POST">
-   
-    <label for="blog-id">Blog id: </label>
-    <input type="text" name="blog-id" value=<?php echo $blogId; ?> readonly><br>
-
-    <label for="blog-title">Change title: </label>
-    <input type="text" name="blog-title" value="<?php echo $blog->getTitle(); ?>"><br>
-    
-    <label for="blog-description">Change description: </label><br>
-    <textarea name="blog-description" rows="5" cols="50"><?php echo $blog->getDescription(); ?></textarea><br>
-    
-    <label for="blog-text">Change text: </label><br>
-    <textarea name="blog-text" rows="50" cols="100"><?php echo nl2br($blog->getText()); ?></textarea><br>
-
-    <label for="blog-file">Or upload new text file: </label>
-    <input type="file" name="blog-file"><br>
-
-    <input type="submit" name="blog-edit-submit" value="Edit">
-
-</form>
-
-<?php
 
     }else{
         echo 'Please return to admin dashboard';
+        die();
     }
 
     if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST["blog-edit-submit"])){
@@ -112,10 +86,34 @@
         }
 
         echo "<script>alert('$alertMessage');</script>";
+        $blog = getBlog($blogId); // refresh blog
 
     }
 
 ?>
+
+<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data" method="POST">
+   
+    <label for="blog-id">Blog id: </label>
+    <input type="text" name="blog-id" value="<?php echo $blogId; ?>" readonly><br>
+    
+    <label for="blog-title">Change title: </label>
+    <input type="text" name="blog-title" value="<?php echo $blog->getTitle(); ?>"><br>
+    
+    <label for="blog-description">Change description: </label><br>
+    <textarea name="blog-description" rows="5" cols="50"><?php echo $blog->getDescription(); ?></textarea><br>
+    
+    <label for="blog-text">Change text: </label><br>
+    <textarea name="blog-text" rows="30" cols="100"><?php echo nl2br($blog->getText()); ?></textarea><br>
+
+    <label for="blog-file">Or upload new text file: </label>
+    <input type="file" name="blog-file"><br>
+
+    <input type="submit" name="blog-edit-submit" value="Edit">
+
+</form>
+
+    
 
 
 

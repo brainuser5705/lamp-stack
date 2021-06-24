@@ -37,7 +37,7 @@
         // alert any confirmation messages at the end of submission
         echo "<script>alert('$alertMessage');</script>";
         // refresh the page for updated lists
-        header("Refresh:0");
+        header("Refresh:0", True);
         die();
     }
     
