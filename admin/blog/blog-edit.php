@@ -6,12 +6,7 @@
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-queries.php';
-
-    function sanitize($value){
-        $value = trim($value);
-        $value = htmlspecialchars($value);
-        return $value;
-    }
+    include $_SERVER['DOCUMENT_ROOT'] . "/abstraction/sanitize.php";
 
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         

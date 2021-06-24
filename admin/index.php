@@ -1,18 +1,13 @@
 <?php
 
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
+    include $_SERVER['DOCUMENT_ROOT'] . "/abstraction/sanitize.php";
 
-    // session_start();
+    session_start();
 
-    // if (!isset($_SESSION["admin"])){
-    //     header("Location: ../login.php");
-    //     die();
-    // }
-
-    function sanitize($value){
-        $value = trim($value);
-        $value = htmlspecialchars($value);
-        return $value;
+    if (!isset($_SESSION["admin"])){
+        header("Location: login.php");
+        die();
     }
 
     $alertMessage = "";
