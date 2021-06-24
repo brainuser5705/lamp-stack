@@ -71,6 +71,7 @@
 
             $alertMessage .= "Status update successfully posted\\n";
             
+            // insert blog into database
             $insertBlog = new InsertStatement($dbconn,
                 "INSERT INTO blog (statusId, title, description, pathToIndex, text)
                 VALUES(?,?,?,?,?);");

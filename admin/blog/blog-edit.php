@@ -7,6 +7,12 @@
     include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-queries.php';
 
+    function sanitize($value){
+        $value = trim($value);
+        $value = htmlspecialchars($value);
+        return $value;
+    }
+
     if($_SERVER["REQUEST_METHOD"] == "POST"){
         
         // determine whether blog id data is from
@@ -24,7 +30,7 @@
 <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]) ?>" enctype="multipart/form-data" method="POST">
    
     <label for="blog-id">Blog id: </label>
-    <input type="text" name="blog-id" value=<?php echo $blogId; ?>><br>
+    <input type="text" name="blog-id" value=<?php echo $blogId; ?> readonly><br>
 
     <label for="blog-title">Change title: </label>
     <input type="text" name="blog-title" value="<?php echo $blog->getTitle(); ?>"><br>
@@ -78,17 +84,27 @@
 
         if($validInputType){
 
+            $title = sanitize($_POST["blog-title"]);
+            $description = sanitize($_POST["blog-description"]);
+
+            // rename folder to new title
+            $oldFolderName = $blog->getPathToIndex();
+            $newFolderName = str_replace(" ", "_", $title);
+            rename(
+                $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $oldFolderName,
+                $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $newFolderName
+            );
+
+            // update database
             $editBlog = new LinkedExecuteStatement($dbconn,
                 "UPDATE blog
-                SET title=?, description=?, text=?
+                SET title=?, description=?, text=?, pathToIndex=?
                 WHERE id=?"
             );
-            $editBlog->addValue(
-                [$_POST["blog-title"], $_POST["blog-description"], $text, $_POST["blog-id"]]
-            );
+            $editBlog->addValue([$title, $description, $text, $newFolderName, $blogId]);
             $editBlog->execute();
-            $alertMessage="Successfully edited blog"; // note does not rename folder
-        
+            $alertMessage="Successfully edited blog";
+            
         }else{
 
             $alertMessage ="Invalid file type, please try again.";
