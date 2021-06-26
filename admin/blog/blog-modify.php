@@ -1,67 +1,71 @@
-<h1>Blog edit</h1>
-<form action="blog/blog-edit.php" method="POST">
+<div class="form" id="blog-edit">
+    <h1>Blog (Edit):</h1>
+    <form action="blog/blog-edit.php" method="POST">
 
-    <?php
+        <?php
 
-        $blogs = getAllBlogs();
-        if (!empty($blogs)){
-            foreach($blogs as $blog){
-                echo '<input type="radio" name="blog" value="' . $blog->getId() . '"=>';
-                $label = $blog->getTitle() . "{<id>id</i>: {$blog->getId()}}";
-                echo '<label for="' . $blog->getId() . '">' . $blog->getTitle() . "</label>";
-                echo "<br>";
+            $blogs = getAllBlogs();
+            if (!empty($blogs)){
+                foreach($blogs as $blog){
+                    echo '<input type="radio" name="blog" value="' . $blog->getId() . '"=>';
+                    $label = $blog->getTitle() . "{<id>id</i>: {$blog->getId()}}";
+                    echo '<label for="' . $blog->getId() . '">' . $blog->getTitle() . "</label>";
+                    echo "<br>";
+                }
+
+        ?>
+
+        <input type="submit" name="blog-edit" value="Edit entry">
+
+        <?php
+
+            }else{
+                echo "No blog yet.<br>";
             }
 
-    ?>
+        ?>
 
-    <input type="submit" name="blog-edit" value="Edit entry">
+    </form> 
+</div>
 
-    <?php
+<div class="form" id="blog-debug">
+    <h1>Blog (Debug):</h1>
 
-        }else{
-            echo "No blog yet.<br>";
-        }
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
-    ?>
+        <?php 
 
-</form> 
+            $blogs = getAllBlogs();
 
-<h1>Blog Debug:</h1>
+            if (!empty($blogs)){ // if there is any blogs
 
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+                echo '<div>Choose which blogs to delete:</div>';
 
-    <?php 
+                // Create checkbox inputs for each entry
+                foreach($blogs as $blog){
+                    echo '<input type="checkbox" name="' . $blog->getId() . '">';
+                    $label = "{ <i>id</i>: " . $blog->getId() . " , <i>title</i>: " . $blog->getTitle() . ", <i>datetime</i>: " . $blog->getDatetime() . "}";
+                    echo '<label for="' . $blog->getId() .'">' . $label . "</label>";
+                    echo '<br>';
+                }
+        ?>
 
-        $blogs = getAllBlogs();
+        <input type="submit" name="blog-select-delete" value="Delete selected blogs"><br>
+        <div><b>OR</b></div>
+        <input type="submit" name="reset-blogs" value="Remove all blogs"><br>
 
-        if (!empty($blogs)){ // if there is any blogs
-
-            echo '<div>Choose which blogs to delete:</div>';
-
-            // Create checkbox inputs for each entry
-            foreach($blogs as $blog){
-                echo '<input type="checkbox" name="' . $blog->getId() . '">';
-                $label = "{ <i>id</i>: " . $blog->getId() . " , <i>title</i>: " . $blog->getTitle() . ", <i>datetime</i>: " . $blog->getDatetime() . "}";
-                echo '<label for="' . $blog->getId() .'">' . $label . "</label>";
-                echo '<br>';
+        <?php
+        // continuing if there are no blogs to delete
+        // note: beginning '}'  is needed  
+            }else{
+                echo "No blogs yet.<br>";
             }
-    ?>
+        ?>
 
-    <input type="submit" name="blog-select-delete" value="Delete selected blogs"><br>
-    <div><b>OR</b></div>
-    <input type="submit" name="reset-blogs" value="Remove all blogs"><br>
+        <input type="submit" name="blog-reset-id" value="Reset auto-increment id"><br>
 
-    <?php
-    // continuing if there are no blogs to delete
-    // note: beginning '}'  is needed  
-        }else{
-            echo "No blogs yet.<br>";
-        }
-    ?>
-
-    <input type="submit" name="blog-reset-id" value="Reset auto-increment id"><br>
-
-</form>
+    </form>
+</div>
 
 <?php
 

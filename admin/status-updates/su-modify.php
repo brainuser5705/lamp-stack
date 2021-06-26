@@ -1,37 +1,39 @@
-<h1>Status Dashboard</h1>
+<div class="form" id="status-modify">
+    <h1>Status Updates:</h1>
 
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
-    <?php 
+        <?php 
 
-        $statuses = getStatuses();
+            $statuses = getStatuses();
 
-        if (!empty($statuses)){ // if there is any status
+            if (!empty($statuses)){ // if there is any status
 
-            echo '<div>Choose which status to delete:</div>';
+                echo '<div>Choose which status to delete:</div>';
 
-            // Create checkbox inputs for each status
-            foreach($statuses as $status){
-                echo '<input type="checkbox" name="' . $status->getId() . '">';
-                $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . $status->getDatetime() . "}";
-                echo '<label for="' . $status->getId() .'">' . $label . "</label>";
-                echo "<br>";
+                // Create checkbox inputs for each status
+                foreach($statuses as $status){
+                    echo '<input type="checkbox" name="' . $status->getId() . '">';
+                    $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . $status->getDatetime() . "}";
+                    echo '<label for="' . $status->getId() .'">' . $label . "</label>";
+                    echo "<br>";
+                }
+        ?>
+
+        <input type="submit" name="status-select-delete" value="Delete selected status updates"><br>
+        <div><b>OR</b></div>
+        <input type="submit" name="reset-statuses" value="Remove all status updates"><br>
+
+        <?php
+            }else{
+                echo "No status updates yet.<br>";
             }
-    ?>
+        ?>
 
-    <input type="submit" name="status-select-delete" value="Delete selected status updates"><br>
-    <div><b>OR</b></div>
-    <input type="submit" name="reset-statuses" value="Remove all status updates"><br>
+        <input type="submit" name="status-reset-id" value="Reset auto-increment id"><br>
 
-    <?php
-        }else{
-            echo "No status updates yet.<br>";
-        }
-    ?>
-
-    <input type="submit" name="status-reset-id" value="Reset auto-increment id"><br>
-
-</form>
+    </form>
+</div>
 
 <?php
 

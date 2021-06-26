@@ -1,0 +1,49 @@
+.form{
+    margin: 20px 0px;
+    padding: 20px;
+    border: 1px solid black;
+}
+
+label{
+    font-weight: bold;
+}
+
+#new-project-type{
+    font-style: italic;
+    margin: 0px 10px;
+}
+
+#new-project-type label{
+    font-weight: normal;
+}
+
+label, textarea, input{
+    display: block;
+}
+
+/* for checkbox and radio inputs */
+
+input[type="checkbox"], input[type="radio"]{
+    display: inline;
+}
+
+input[type="checkbox"] + label, input[type="radio"] + label{
+    display: inline;
+}
+
+/* submit button */
+
+input[type="submit"]{
+    margin-top: 2em;
+    color: white;
+    background-color: #1060a7;
+    
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+input[type="submit"]:hover{
+    cursor: pointer;
+    background-color: #1791fc;;
+}

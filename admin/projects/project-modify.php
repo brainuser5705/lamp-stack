@@ -1,39 +1,41 @@
-<h1>Project Dashboard</h1>
+<div class="form" id="project-modify">
+    <h1>Project:</h1>
 
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
-    <?php 
+        <?php 
 
-        $projects = getProjects();
+            $projects = getProjects();
 
-        if (!empty($projects)){ // if there is any project
+            if (!empty($projects)){ // if there is any project
 
-            echo '<div>Choose which project to delete:</div>';
+                echo '<div>Choose which project to delete:</div>';
 
-            // Create checkbox inputs for each entry
-            foreach($projects as $project){
-                echo '<input type="checkbox" name="' . $project->getId() . '">';
-                $label = "{ <i>id</i>: " . $project->getId() . " , <i>title</i>: " . $project->getTitle() . ", <i>type</i>: " . $project->getType() . "}";
-                echo '<label for="' . $project->getId() .'">' . $label . "</label>";
-                echo '<br>';
+                // Create checkbox inputs for each entry
+                foreach($projects as $project){
+                    echo '<input type="checkbox" name="' . $project->getId() . '">';
+                    $label = "{ <i>id</i>: " . $project->getId() . " , <i>title</i>: " . $project->getTitle() . ", <i>type</i>: " . $project->getType() . "}";
+                    echo '<label for="' . $project->getId() .'">' . $label . "</label>";
+                    echo '<br>';
+                }
+        ?>
+
+        <input type="submit" name="project-select-delete" value="Delete selected projects"><br>
+        <div><b>OR</b></div>
+        <input type="submit" name="reset-projects" value="Remove all projects"><br>
+
+        <?php
+        // continuing if there are no projects to delete
+        // note: beginning '}'  is needed  
+            }else{
+                echo "No projects yet.<br>";
             }
-    ?>
+        ?>
 
-    <input type="submit" name="project-select-delete" value="Delete selected projects"><br>
-    <div><b>OR</b></div>
-    <input type="submit" name="reset-projects" value="Remove all projects"><br>
+        <input type="submit" name="project-reset-id" value="Reset auto-increment id"><br>
 
-    <?php
-    // continuing if there are no projects to delete
-    // note: beginning '}'  is needed  
-        }else{
-            echo "No projects yet.<br>";
-        }
-    ?>
-
-    <input type="submit" name="project-reset-id" value="Reset auto-increment id"><br>
-
-</form>
+    </form>
+</div>
 
 <?php
 

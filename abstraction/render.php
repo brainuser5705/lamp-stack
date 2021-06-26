@@ -9,13 +9,13 @@
      * @return - output containing the HTML markup, else an error message if no template file is found
      * 
      */
-    function render($templateName, $variables=null){
+    function render($templateName, $variables=null, $folder="/templates/"){
 
         // determine where the template file is located
         $extension = pathinfo($templateName)["extension"];
         switch($extension){
             case "php":
-                $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/templates/' . $templateName;
+                $templatePath = $_SERVER['DOCUMENT_ROOT'] . $folder . $templateName;
                 break;
             case "html":
                 $templatePath = $_SERVER['DOCUMENT_ROOT'] . '/' . $templateName;

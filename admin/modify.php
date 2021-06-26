@@ -1,4 +1,3 @@
-
 <?php
 
     include $_SERVER['DOCUMENT_ROOT'] . "/templates/admin/admin-top.php";
@@ -22,9 +21,10 @@
     include $_SERVER['DOCUMENT_ROOT'] . '/projects/project-models.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/projects/project-queries.php';
 
-    include 'status-updates/su-form.php';
-    include 'blog/blog-form.php';
-    include 'projects/project-form.php';
+    include 'status-updates/su-modify.php';
+    include 'files/files-modify.php';
+    include 'blog/blog-modify.php';
+    include 'projects/project-modify.php';
 
     if ($alertMessage != ""){
         // alert any confirmation messages at the end of submission
@@ -35,5 +35,5 @@
     }
 
     include $_SERVER['DOCUMENT_ROOT'] . "/templates/admin/admin-bottom.php";
-    
+        
 ?>

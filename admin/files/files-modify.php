@@ -1,34 +1,36 @@
-<h1>Files</h1>
+<div class="form" id="files-modify">
+    <h1>Files:</h1>
 
-<form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
+    <form action="<?php echo $_SERVER["PHP_SELF"]; ?>" method="POST">
 
-    <?php
-        $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
-        if (!empty($files)){
+        <?php
+            $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
+            if (!empty($files)){
 
-            echo '<div>Choose which files to delete:</div>';
-            
-            foreach($files as $file){
-                echo '<input type="checkbox" name="' . $file . '">';
-                echo '<label for="' . $file . '">' . $file . '</label>';
-                echo '<br>';
+                echo '<div>Choose which files to delete:</div>';
+                
+                foreach($files as $file){
+                    echo '<input type="checkbox" name="' . $file . '">';
+                    echo '<label for="' . $file . '">' . $file . '</label>';
+                    echo '<br>';
+                }
+        ?>
+
+        <input type="submit" name="file-select-delete" value="Delete selected files"><br>
+        <div><b>OR</b></div>
+        <input type="submit" name="reset-files" value="Remove all files"><br>
+
+        <?php
+
+            }else{
+                echo "No files in folder.";
             }
-    ?>
+        
+        ?>
+        
+    </form>
 
-    <input type="submit" name="file-select-delete" value="Delete selected files"><br>
-    <div><b>OR</b></div>
-    <input type="submit" name="reset-files" value="Remove all files"><br>
-
-    <?php
-
-        }else{
-            echo "No files in folder.";
-        }
-    
-    ?>
-
-
-</form>
+</div>
 
 <?php
 

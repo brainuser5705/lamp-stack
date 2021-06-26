@@ -14,11 +14,12 @@ a:hover{
 
 /* h1 would be the title */
 h1{
-    margin: 2px;
+    margin: 0px;
 }
 
 p{
     color: #1060a7;
+    margin: 0px;
 }
 
 img{

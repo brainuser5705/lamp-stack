@@ -1,16 +1,18 @@
 <div class="form" id="status-form">
-    <h1>Update the people!</h1>
+
+    <h1>Status Updates:</h1>
+
     <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
         
-        <label for="status">Status Markdown:</label><br>
-        <i>Reminder that two spaces (not carriage return) will mean newline in Markdown.</i><br>
-        <textarea name="status" rows="7" cols="50"></textarea><br>
+        <label for="status">Status Markdown:</label>
+        <i>Reminder that two spaces (not carriage return) will mean newline in Markdown.</i>
+        <textarea name="status" rows="7" cols="50"></textarea>
 
         <label for="files">Upload files:</label>
-        <input type="file" name="files[]" multiple><br><br>
+        <input type="file" name="files[]" multiple>
         <!-- display a list of files that were selected and allow for deletion -->
 
-        Current uploaded files:
+        <i>Current uploaded files:</i>
         <ul>
             <?php
                 $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
@@ -22,6 +24,7 @@
 
         <input type="submit" value="Post update" name="submit-status">
     </form>  
+    
 </div>
 
 <?php

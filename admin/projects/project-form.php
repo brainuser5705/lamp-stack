@@ -1,37 +1,45 @@
-<h1>Submit a project: </h1>
+<div class="form" id="project-form">
 
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
-    <label for="title">Title: </label>
-    <input type="text" name="title"><br>
+    <h1>Project:</h1>
 
-    <label for="description">Description: </label><br>
-    <textarea name="description" rows="2" cols="30"></textarea><br>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
+        <label for="title">Title: </label>
+        <input type="text" name="title">
 
-    <label for="link">Link: </label>
-    <input type="text" name="link"><br>
+        <label for="description">Description: </label>
+        <textarea name="description" rows="2" cols="30"></textarea>
 
-    <label for="type">Type: </label><br>
-    <?php
+        <label for="link">Link: </label>
+        <input type="text" name="link">
+
+        <label for="type">Type: </label>
+        <?php
+            
+            foreach(getProjectTypes() as $type){
+                $typeName = $type["name"];
+
+                echo '<input type="radio" name="type" value="' . $typeName . '">';
+                echo '<label for="' . $typeName . '"> ' . $typeName . "</label>";
+                echo '<br>';
+            }
+
+        ?>
         
-        foreach(getProjectTypes() as $type){
-            $typeName = $type["name"];
+        <!-- insert new project type -->
+        <input type="radio" name="type" value="new">
+        <label for="new">New: </label>
 
-            echo '<input type="radio" name="type" value="' . $typeName . '">';
-            echo '<label for="' . $typeName . '"> ' . $typeName . "</label>";
-            echo '<br>';
-        }
+        <div id="new-project-type">
+            <label for="new-type-name"><i>Name - </i></label>
+            <input type="text" name="new-type-name">
+            <label for="new-type-description"><i>Description - </i></label>
+            <textarea name="new-type-description" rows="2" cols="20"></textarea>
+        </div>
 
-    ?>
-    <!-- insert new project type -->
-    <input type="radio" name="type" value="new">
-    <label for="new">New: </label><br>
-    <label for="new-type-name"><i>Name - </i></label>
-    <input type="text" name="new-type-name"><br>
-    <label for="new-type-description"><i>Description - </i></label><br>
-    <textarea name="new-type-description" rows="2" cols="20"></textarea><br>
+        <input type="submit" name="submit-project" value="Submit project">
+    </form>
 
-    <input type="submit" name="submit-project" value="Submit project">
-</form>
+</div>
 
 <?php
 

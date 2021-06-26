@@ -1,4 +1,3 @@
-
 <a href="/admin">Return to admin dashboard</a>
 
 <?php

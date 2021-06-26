@@ -22,11 +22,6 @@ header{
     /* text-shadow: 0px 2px 5px #1791fc; */
 }
 
-#website-name:hover{
-    color: #1791fc
-    /* random color script here */
-}
-
 /* navigation bar */
 nav{
     text-align: center;
@@ -114,7 +109,7 @@ main{
     
 }
 
-/* footer */
+/***************FOOTER***********************/
 
 footer{
     width: 100%;
@@ -160,5 +155,5 @@ footer a:hover #about-dark{
 }
 
 .footer-icon{
-    margin: 5px;
+    margin: 15px;
 }

@@ -1,5 +1,3 @@
-<h1>Submit a blog entry</h1>
-
 <?php
 
     // initial values for form inputs
@@ -100,22 +98,26 @@
 
 ?>
 
-<form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
+<div class="form" id="blog-form">
+    <h1>Blog:</h1>
 
-    <label for="title">Title: </label>
-    <input type="text" name="title" value="<?php echo $title; ?>"><br>
+    <form action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>" enctype="multipart/form-data" method="POST">
 
-    <label for="description">Description: </label><br>
-    <textarea name="description" rows = "5" cols= "50"><?php echo $description; ?></textarea><br>
+        <label for="title">Title: </label>
+        <input type="text" name="title" value="<?php echo $title; ?>">
 
-    <label for="text-file">Text File: </label>
-    <input type="file" name="text-file">
-    <i>Accepts .txt, .md, .html files</i><br>
+        <label for="description">Description: </label>
+        <textarea name="description" rows = "5" cols= "50"><?php echo $description; ?></textarea>
 
-    <label for="additional-files">Upload additional files: </label>
-    <input type="file" name="additional-files[]" multiple><br><br>
+        <label for="text-file">Text File: </label>
+        <input type="file" name="text-file">
+        <i>Accepts .txt, .md, .html files</i>
 
-    <input type="submit" name="submit-blog" value="Post">
+        <label for="additional-files">Upload additional files: </label>
+        <input type="file" name="additional-files[]" multiple>
 
-</form>
+        <input type="submit" name="submit-blog" value="Post">
+
+    </form>
+</div>
 
