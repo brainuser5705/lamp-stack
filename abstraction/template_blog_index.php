@@ -21,6 +21,12 @@
     "<div><i>{$blog->getDatetime()}</i></div>";
 
 
-    echo render('base.php', ["title"=>$blog->getTitle(), "content"=>$heading . $blog->getText()]);
+    // parse the text from database
+    include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
+    $Parsedown = new Parsedown();
+    $text = $Parsedown->text($blog->getText());
+
+
+    echo render('base.php', ["title"=>$blog->getTitle(), "content"=>$heading . $text]);
 
 ?>

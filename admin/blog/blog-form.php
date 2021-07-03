@@ -18,19 +18,13 @@
             $filename = $file["name"];
             $tmpPath = $file["tmp_name"];
             
-            switch(pathinfo($filename)["extension"]){
-                case "html":
-                case "txt":
-                    $text = nl2br(file_get_contents($tmpPath));
-                    break;
-                case "md":
-                    include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
-                    $Parsedown = new Parsedown();
-                    $text = $Parsedown->text(file_get_contents($tmpPath));
-                    break;
-                default:
-                    $validFileType = false;
-            }  
+            if (pathinfo($filename)["extension"] != "md"){
+                $alertMessage = "Invalid extension";
+                $validInputType = false;
+            }else{
+                $text = file_get_contents($tmpPath);
+            }
+        
         }
 
         if ($validFileType){

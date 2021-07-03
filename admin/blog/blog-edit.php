@@ -33,21 +33,15 @@
             $filename = $file["name"];
             $tmpPath = $file["tmp_name"];
             
-            switch(pathinfo($filename)["extension"]){
-                case "html":
-                case "txt":
-                    $text = nl2br(file_get_contents($tmpPath));
-                    break;
-                case "md":
-                    include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
-                    $Parsedown = new Parsedown();
-                    $text = $Parsedown->text(file_get_contents($tmpPath));
-                    break;
-                default:
-                    $validInputType = false;
-            }  
+            if (pathinfo($filename)["extension"] != "md"){
+                $alertMessage = "Invalid extension";
+                $validInputType = false;
+            }else{
+                $text = file_get_contents($tmpPath);
+            }
+            
         }else{
-            $text = $_POST["blog-text"];
+            $text = $_POST["blog-text"]; 
         }
 
         if($validInputType){
@@ -98,7 +92,7 @@
     <textarea name="blog-description" rows="5" cols="50"><?php echo $blog->getDescription(); ?></textarea><br>
     
     <label for="blog-text">Change text: </label><br>
-    <textarea name="blog-text" rows="30" cols="100"><?php echo nl2br($blog->getText()); ?></textarea><br>
+    <textarea name="blog-text" rows="30" cols="100"><?php echo $blog->getText(); ?></textarea><br>
 
     <label for="blog-file">Or upload new text file: </label>
     <input type="file" name="blog-file"><br>
