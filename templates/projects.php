@@ -7,7 +7,7 @@ Context variables: project type and list of projects of type.
 
     <!-- List heading -->
     <h1><?php echo $type["name"] ?></h1>
-    <p><?php echo $type["description"] ?></p>
+    <p><i><?php echo $type["description"] ?></i></p>
 
     <ul>
         <?php 

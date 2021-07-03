@@ -18,12 +18,12 @@
         foreach($statuses as $status){
             $statusContent .= render('status-updates.php', ["status"=>$status, "Parsedown"=>$Parsedown]);
         }
-        $statusContent .= '<i>Markdown parsed with <a href="https://github.com/erusev/parsedown">Parsedown.</a></i>';
+        $statusContent .= '<hr><i>Markdown parsed with <a href="https://github.com/erusev/parsedown">Parsedown.</a></i>';
     
     }else{
         $statusContent = "No status updates yet.";
     }
 
-    echo render('base.php', ["title"=>$title, "content"=>$statusContent]);
+    echo render('base.php', ["title"=>$title, "styleArr"=>["su.css"], "content"=>$statusContent]);
 
 ?>

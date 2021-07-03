@@ -20,7 +20,7 @@
             
             if (pathinfo($filename)["extension"] != "md"){
                 $alertMessage = "Invalid extension";
-                $validInputType = false;
+                $validFileType = false;
             }else{
                 $text = file_get_contents($tmpPath);
             }
@@ -39,9 +39,9 @@
                 
                 // insert status update for blog
                 $statusText =
-                    "**New blog update:**" . 
-                    '<a href="/blog/' . $title . '">' . $title . '</a>  ' . "\n" .
-                    "<i>{$description}</i>";
+                    "**New blog update: **" . 
+                    '<a href="/blog/' . $title . '">' . $title . '</a>  ' .
+                    "  <i>{$description}</i>";
 
                 $insertStatus = new InsertStatement($dbconn,
                     "INSERT INTO status (markdown)

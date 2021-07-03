@@ -18,7 +18,7 @@
         $blogContent = "No blog entries yet.";
     }
 
-    echo render("base.php", ["title"=>$title, "content"=>$blogContent]);
+    echo render("base.php", ["title"=>$title, "styleArr"=>["blog.css"], "content"=>$blogContent]);
 
 ?>
 
