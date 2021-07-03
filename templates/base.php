@@ -6,7 +6,7 @@
         <title>
             <?php echo $title; ?>
         </title>
-        <link rel="shortcut icon" type="image/jpg" href="https://cdn.iconscout.com/icon/free/png-512/b-characters-character-alphabet-letter-36044.png"/>
+        <link rel="shortcut icon" type="image/jpg" href="/favicon.png"/>
         <link rel="stylesheet" href="/static/css/layout.css">
         <link rel="stylesheet" href="/static/css/styles.css">
         <?php
