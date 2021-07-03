@@ -54,11 +54,13 @@ body{
 
 .visible-body{
     width: 100%;
+    background-color: #1791fc;
 }
 
 /* the actual text gets some padding */
 main{
-    width: 65vw;
+    background-color: white;
+    width: 40vw;
     padding: 20px 10px;
     margin: 10px auto;
 }
@@ -100,7 +102,7 @@ main{
     }
 
     main{
-        width: 95vw;
+        width: 85vw;
     }
 
     main{
