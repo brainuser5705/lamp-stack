@@ -33,10 +33,13 @@
                     <a href="\status-updates">Statuses</a>
                     <a href="\blog">Blog</a>
                     <?php
+
+                        // add link to admin page if logged in
                         session_start();
                         if (isset($_SESSION["admin"])){
                             echo '<a href="/admin/">Admin</a>';
                         }
+
                     ?>
                     <hr>
                 </nav>

@@ -78,7 +78,7 @@
 
             foreach($blogs as $blog){
                 rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
-                $deleteStatus->addValue([$blog->getId()]);
+                $deleteStatus->addValue([$blog->getStatusId()]);
                 $deleteStatus->execute("Fail to delete statuses.");
             }
 
@@ -103,7 +103,7 @@
                     rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
                 
                     // delete status
-                    $deleteStatus->addValue([$blog->getId()]);
+                    $deleteStatus->addValue([$blog->getStatusId()]);
                     $deleteStatus->execute("Fail to delete statuses.");
                 }
             }

@@ -52,6 +52,10 @@ class Blog extends Entity{
     public function getDatetime(){
         return $this->datetime;
     }
+
+    public function getStatusId(){
+        return $this->statusId;
+    }
     
 }
 
