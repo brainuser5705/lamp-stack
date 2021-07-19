@@ -17,7 +17,7 @@ $options = [
 ];
 
 // path to files folder storing all uploaded files
-$SU_FOLDER_PATH = '/status-updates/files/';
+$SU_FOLDER_PATH = $_SERVER['DOCUMENT_ROOT'] . '/status-updates/files/';
 
 /**
  * Represents attached files to a blog entry

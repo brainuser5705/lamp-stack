@@ -12,16 +12,6 @@
         <input type="file" name="files[]" multiple>
         <!-- display a list of files that were selected and allow for deletion -->
 
-        <i>Current uploaded files:</i>
-        <ul>
-            <?php
-                $files = array_diff(scandir($SU_FOLDER_PATH), ['..','.']);
-                foreach($files as $file){
-                    echo "<li>{$file}</li>"; 
-                }
-            ?>
-        </ul>
-
         <input type="submit" value="Post update" name="submit-status">
     </form>  
     
