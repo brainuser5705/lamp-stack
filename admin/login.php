@@ -18,13 +18,13 @@
                 $username = sanitize($_POST["username"]);
                 $password = sanitize($_POST["password"]);
 
-                echo (getenv("USER"));
+                echo (getenv("USERNAME"));
                 echo (getenv("PASS"));
 
                 echo $username;
                 echo $password;
                 
-                if ($username == getenv("USER")){
+                if ($username == getenv("USERNAME")){
                     if ($password == getenv("PASS")){
                         $login = TRUE;
                     }
