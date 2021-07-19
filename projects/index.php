@@ -14,7 +14,8 @@
     if (!empty($projectTypes)){
         foreach($projectTypes as $type){
             // template variables: the type and array of projects of type
-            $projectContent .= render("projects.php", ["type"=>$type, "projects"=>getSpecificProjects($type["name"])]);
+            $projects = getSpecificProjects($type["name"]);
+            $projectContent .= render("projects.php", ["type"=>$type, "projects"=>$projects]);
         }
     }else{
         $projectContent = "No projects yet.";
