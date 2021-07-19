@@ -12,7 +12,7 @@
     $statusContent = "";
     if (!empty($statuses)){
 
-        require __DIR__ . '/vendor/autoload.php';
+        require '/app/vendor/autoload.php';
         $Parsedown = new Parsedown();
 
         foreach($statuses as $status){
