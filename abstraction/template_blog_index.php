@@ -24,7 +24,7 @@
 
 
     // parse the text from database
-    require '/vendor/autoload.php';
+    require '../../vendor/autoload.php';
     $Parsedown = new Parsedown();
     $text = $Parsedown->text($blog->getText());
 
