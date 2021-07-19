@@ -355,6 +355,7 @@ class DBConnection{
      * @param dbname the database to connect to
      */
     function __construct($dbname){
+        global $db;
         $this->conn = new PDO("pdsql:" . sprintf(
             "host=%s;port=%s;user=%s;password=%s;dbname=%s;options=%s",
             $db["host"],
