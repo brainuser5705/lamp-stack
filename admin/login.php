@@ -19,9 +19,7 @@
                 $password = sanitize($_POST["password"]);
 
                 if ($username == getenv("USER")){
-                    echo "successful user";
-                    if (password_verify($password, getenv("PASS"))){
-                        echo "successful password";
+                    if ($password == getenv("PASS")){
                         $login = TRUE;
                     }
                 }
