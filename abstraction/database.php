@@ -10,7 +10,6 @@
  * @var options intial configuration of PDO
  */
 $db = parse_url(getenv("DATABASE_URL"));
-$db["path"] = ltrim($db["path"], "/");
 $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -355,15 +354,14 @@ class DBConnection{
      * @param dbname the database to connect to
      */
     function __construct($dbname){
-        global $db;
-        $this->conn = new PDO("pdsql:" . sprintf(
-            "host=%s;port=%s;user=%s;password=%s;dbname=%s;options=%s",
+        global $db, $options;
+        $this->conn = new PDO("pgsql:" . sprintf(
+            "host=%s;port=%s;user=%s;password=%s;dbname=%s",
             $db["host"],
             $db["port"],
             $db["user"],
             $db["pass"],
-            $db["path"],
-            $options
+            ltrim($db["path"], "/")
         ));
     }
 
