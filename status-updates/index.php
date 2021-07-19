@@ -12,7 +12,7 @@
     $statusContent = "";
     if (!empty($statuses)){
 
-        include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
+        require __DIR__ . '/vendor/autoload.php';
         $Parsedown = new Parsedown();
 
         foreach($statuses as $status){

@@ -9,9 +9,8 @@
  * Server variables
  * @var options intial configuration of PDO
  */
-$servername = "localhost";
-$username = "root";
-$password = "";
+$db = parse_url(getenv("DATABASE_URL"));
+$db["path"] = ltrim($db["path"], "/");
 $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
@@ -60,7 +59,7 @@ class File{
     }
 
     /**
-     * Uploads file to 'images/' folder
+     * Uploads file to 'files/' folder
      * @uses changeFileName
      */
     public function upload(){
@@ -356,9 +355,15 @@ class DBConnection{
      * @param dbname the database to connect to
      */
     function __construct($dbname){
-        global $servername, $username, $password, $options;
-        $dsn = "mysql:host=$servername;dbname=$dbname";
-        $this->conn = new PDO($dsn, $username, $password, $options);
+        $this->conn = new PDO("pdsql:" . sprintf(
+            "host=%s;port=%s;user=%s;password=%s;dbname=%s;options=%s",
+            $db["host"],
+            $db["port"],
+            $db["user"],
+            $db["pass"],
+            $db["path"],
+            $options
+        ));
     }
 
     function getConn(){

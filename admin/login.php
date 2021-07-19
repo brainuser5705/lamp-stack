@@ -5,11 +5,6 @@
 
     session_start();
 
-    // setting the environment variables (development)
-    $hash = password_hash('testing',PASSWORD_DEFAULT);
-    putenv('PASSWORD='.$hash);
-    putenv('USERNAME=testuser');
-
     // default values before logging in
     $login = FALSE;
     $usernameMsg = $passwordMsg = "";
@@ -23,8 +18,8 @@
                 $username = sanitize($_POST["username"]);
                 $password = sanitize($_POST["password"]);
 
-                if ($username == getenv("USERNAME")){
-                    if (password_verify($password, getenv("PASSWORD"))){
+                if ($username == getenv("USER")){
+                    if (password_verify($password, getenv("PASS"))){
                         $login = TRUE;
                     }
                 }
