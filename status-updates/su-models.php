@@ -7,12 +7,12 @@ class Status extends Entity{
 
     private $id;
     private $datetime;
-    private $markdown;
+    private $text;
 
     // all parameters are null because when db fetch into entry, it does not need an required parameters
-    function __construct($markdown=null, $id=null, $datetime=null){
+    function __construct($text=null, $id=null, $datetime=null){
         $this->id = $id;
-        $this->markdown = $markdown;
+        $this->text = $text;
         $this->datetime = $datetime;
     }
 
@@ -24,8 +24,8 @@ class Status extends Entity{
         return $this->datetime;
     }
 
-    public function getMarkdown(){
-        return $this->markdown;
+    public function getText(){
+        return $this->text;
     }
 
 
@@ -42,7 +42,7 @@ class Status extends Entity{
      */
     function go(){
         $insertEntry = $this->getStatement();
-        $insertEntry->getPDOStatement()->execute([$this->markdown]); // binds the markdown attribute
+        $insertEntry->getPDOStatement()->execute([$this->text]); // binds the text attribute
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();

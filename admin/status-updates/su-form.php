@@ -39,7 +39,7 @@
 
         // insert status into database
         $insertStatus = new InsertStatement($dbconn, 
-            "INSERT INTO status(markdown)
+            "INSERT INTO status(text)
             VALUES (?);");
         $insertStatus->linkEntity($status);
         $insertStatus->execute("Failed to insert status into database");

@@ -8,7 +8,7 @@
 
         $title = sanitize($_POST["title"]);
         $description = sanitize($_POST["description"]);
-        $pathToIndex = str_replace(" ", "_", $title);
+        $folder_name = str_replace(" ", "_", $title);
 
         $validFileType = true;
         // converts text file to html
@@ -30,7 +30,7 @@
         if ($validFileType){
 
             // make folder
-            $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $pathToIndex;
+            $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $folder_name;
             if (is_dir($folderPath)){
                 $alertMessage = "Title already taken, change title.";
             }else{
@@ -44,19 +44,19 @@
                     "  <i>{$description}</i>";
 
                 $insertStatus = new InsertStatement($dbconn,
-                    "INSERT INTO status (markdown)
+                    "INSERT INTO status (text)
                     VALUES(?);");
                 $insertStatus->linkEntity(new Status($statusText));
                 $insertStatus->execute("Failed to insert status update into database");
-                $statusId = $insertStatus->getReturn();
+                $status_id = $insertStatus->getReturn();
 
                 $alertMessage .= "Status update successfully posted\\n";
                 
                 // insert blog into database
                 $insertBlog = new InsertStatement($dbconn,
-                    "INSERT INTO blog (statusId, title, description, pathToIndex, text)
+                    "INSERT INTO blog (status_id, title, description, folder_name, text)
                     VALUES(?,?,?,?,?);");
-                $blog = new Blog($statusId, $title, $description, $pathToIndex, $text);
+                $blog = new Blog($status_id, $title, $description, $folder_name, $text);
                 $insertBlog->linkEntity($blog);
                 $insertBlog->execute("Failed to insert blog into database");
                 $blogId = $insertBlog->getReturn();

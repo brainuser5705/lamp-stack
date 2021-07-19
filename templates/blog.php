@@ -1,7 +1,7 @@
 <div class="blog-entry">
 
     <div class="blog-entry-title">
-        <a href="\blog\<?php echo $entry->getPathToIndex(); ?>">
+        <a href="\blog\<?php echo $entry->getFolderName(); ?>">
             <?php echo $entry->getTitle(); ?>
         </a>
     </div>

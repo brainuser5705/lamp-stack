@@ -100,7 +100,7 @@
                     
                     // delete folder
                     $blog = getBlog($k);
-                    rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
+                    rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getFolderName());
                 
                     // delete status
                     $deleteStatus->addValue([$blog->getStatusId()]);

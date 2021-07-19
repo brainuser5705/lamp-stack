@@ -6,7 +6,7 @@
         <title>
             <?php echo $title; ?>
         </title>
-        <link rel="shortcut icon" type="image/jpg" href="/favicon.png"/>
+        <link rel="shortcut icon" type="image/jpg" href="/favicon.ico"/>
         <link rel="stylesheet" href="/static/css/layout.css">
         <link rel="stylesheet" href="/static/css/styles.css">
         <?php
@@ -33,13 +33,10 @@
                     <a href="\status-updates">Statuses</a>
                     <a href="\blog">Blog</a>
                     <?php
-
-                        // add link to admin page if logged in
                         session_start();
                         if (isset($_SESSION["admin"])){
                             echo '<a href="/admin/">Admin</a>';
                         }
-
                     ?>
                     <hr>
                 </nav>
