@@ -1,8 +1,8 @@
 <div class="status-update">
     <div class="status-update-text">
         <?php 
-            $markdown = $status->getMarkdown(); 
-            echo $Parsedown->text($markdown);
+            $text = $status->getText(); 
+            echo $Parsedown->text($text);
         ?>
     </div>
     <div class="status-update-datetime">

@@ -5,7 +5,7 @@
 
         $getBlog = new SelectStatement($dbconn,
             "SELECT * FROM blog;");
-        $getBlog->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Blog', ['statusId','title','description','pathToIndex','text']);
+        $getBlog->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Blog', ['status_id','title','description','folder_name','text']);
         $blog = $getBlog->execute("Failed to get blog from database");
         
         return $blog;
@@ -17,7 +17,7 @@
         $getBlog = new SelectStatement($dbconn,
             "SELECT * FROM blog
             WHERE id = ?;");
-        $getBlog->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Blog', ['statusId','title','description','pathToIndex','text']);
+        $getBlog->setFetchMode(PDO::FETCH_CLASS | PDO::FETCH_PROPS_LATE, 'Blog', ['status_id','title','description','folder_name','text']);
         $blog = $getBlog->execute("Failed to get blog from database", [$id]); // return as array
 
         return $blog[0];

@@ -3,26 +3,26 @@
 class Blog extends Entity{
 
     private $id;
-    private $statusId;
+    private $status_id;
     private $title;
     private $description;
-    private $pathToIndex;
+    private $folder_name;
     private $text;
     private $datetime;
 
-    public function __construct($statusId, $title, $description, $pathToIndex, $text, $id=null, $datetime=null){
+    public function __construct($status_id, $title, $description, $folder_name, $text, $id=null, $datetime=null){
         $this->id = $id;
-        $this->statusId = $statusId;
+        $this->status_id = $status_id;
         $this->title = $title;
         $this->description = $description;
-        $this->pathToIndex = $pathToIndex;
+        $this->folder_name = $folder_name;
         $this->text = $text;
         $this->datetime = $datetime;
     }
 
     public function go(){
         $insertBlog = $this->getStatement();
-        $insertBlog->getPDOStatement()->execute([$this->statusId, $this->title, $this->description, $this->pathToIndex, $this->text]);
+        $insertBlog->getPDOStatement()->execute([$this->status_id, $this->title, $this->description, $this->folder_name, $this->text]);
 
         global $dbconn;
         $lastId = $dbconn->getConn()->lastInsertId();
@@ -33,6 +33,10 @@ class Blog extends Entity{
         return $this->id;
     }
 
+    public function getStatusId(){
+        return $this->status_id;
+    }
+
     public function getTitle(){
         return $this->title;
     }
@@ -41,8 +45,8 @@ class Blog extends Entity{
         return $this->description;
     }
 
-    public function getPathToIndex(){
-        return $this->pathToIndex;
+    public function getFolderName(){
+        return $this->folder_name;
     }
 
     public function getText(){
@@ -51,10 +55,6 @@ class Blog extends Entity{
 
     public function getDatetime(){
         return $this->datetime;
-    }
-
-    public function getStatusId(){
-        return $this->statusId;
     }
     
 }

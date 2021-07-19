@@ -12,7 +12,7 @@
         global $dbconn;
 
         $getTypes = new SelectStatement($dbconn, 
-            "SELECT * FROM projectType;");
+            "SELECT * FROM project_type;");
         $getTypes->setFetchMode(PDO::FETCH_ASSOC);
         
         $typesArr = $getTypes->execute("Failed to get project types from database");

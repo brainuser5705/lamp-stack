@@ -24,7 +24,7 @@
 
 
     // parse the text from database
-    include $_SERVER['DOCUMENT_ROOT'] . '/parsedown-1.7.4/Parsedown.php';
+    require '/app/vendor/autoload.php';
     $Parsedown = new Parsedown();
     $text = $Parsedown->text($blog->getText());
 
