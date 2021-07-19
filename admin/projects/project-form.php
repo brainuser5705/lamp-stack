@@ -57,8 +57,8 @@
 
             // must use linkedexecute b/c prepared statement
             $insertNewType = new LinkedExecuteStatement($dbconn,
-                "INSERT INTO project_type
-                 VALUES(NULL, ?, ?);"); // null value for id
+                "INSERT INTO project_type (name, description)
+                 VALUES(?, ?);");
             $insertNewType->addValue([$newTypeName, $newTypeDescription]);
             $insertNewType->execute();
 
