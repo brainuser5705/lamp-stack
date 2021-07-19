@@ -19,7 +19,7 @@ Context variables: project type and list of projects of type.
                     echo '</li>';
                 }
             }else{
-                echo "No projects yet."
+                echo "No projects yet.";
             }
         ?>
     </ul>
