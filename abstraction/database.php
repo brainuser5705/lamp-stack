@@ -356,13 +356,12 @@ class DBConnection{
     function __construct($dbname){
         global $db, $options;
         $this->conn = new PDO("pgsql:" . sprintf(
-            "host=%s;port=%s;user=%s;password=%s;dbname=%s;options=%s",
+            "host=%s;port=%s;user=%s;password=%s;dbname=%s",
             $db["host"],
             $db["port"],
             $db["user"],
             $db["pass"],
-            ltrim($db["path"], "/"),
-            $options
+            ltrim($db["path"], "/")
         ));
     }
 
