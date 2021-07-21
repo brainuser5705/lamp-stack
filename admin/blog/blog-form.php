@@ -10,82 +10,38 @@
         $description = sanitize($_POST["description"]);
         $folder_name = str_replace(" ", "_", $title);
 
-        $validFileType = true;
-        // converts text file to html
-        if (isset($_FILES["text-file"]) && $_FILES["text-file"]["name"] != ""){
+        $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $folder_name;
+        if (is_dir($folderPath)){
 
-            $file = $_FILES["text-file"]; 
-            $filename = $file["name"];
-            $tmpPath = $file["tmp_name"];
+            $alertMessage = "Title already taken, change title.";
+
+        }else{
+
+            // insert status update for blog
+            $statusText =
+                "**New blog update: **" . 
+                '<a href="/blog/' . $title . '">' . $title . '</a>  ' .
+                "  <i>{$description}</i>";
+
+            $insertStatus = new InsertStatement($dbconn,
+                "INSERT INTO status (text)
+                VALUES(?);");
+            $insertStatus->linkEntity(new Status($statusText));
+            $insertStatus->execute("Failed to insert status update into database");
+            $status_id = $insertStatus->getReturn();
+
+            $alertMessage .= "Status update successfully posted\\n";
             
-            if (pathinfo($filename)["extension"] != "md"){
-                $alertMessage = "Invalid extension";
-                $validFileType = false;
-            }else{
-                $text = file_get_contents($tmpPath);
-            }
-        
-        }
+            // insert blog into database
+            $insertBlog = new InsertStatement($dbconn,
+                "INSERT INTO blog (status_id, title, description, folder_name, text)
+                VALUES(?,?,?,?,?);");
+            $blog = new Blog($status_id, $title, $description, $folder_name, $text);
+            $insertBlog->linkEntity($blog);
+            $insertBlog->execute("Failed to insert blog into database");
+            $blogId = $insertBlog->getReturn();
 
-        if ($validFileType){
-
-            // make folder
-            $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $folder_name;
-            if (is_dir($folderPath)){
-                $alertMessage = "Title already taken, change title.";
-            }else{
-
-                mkdir($folderPath);
-                
-                // insert status update for blog
-                $statusText =
-                    "**New blog update: **" . 
-                    '<a href="/blog/' . $title . '">' . $title . '</a>  ' .
-                    "  <i>{$description}</i>";
-
-                $insertStatus = new InsertStatement($dbconn,
-                    "INSERT INTO status (text)
-                    VALUES(?);");
-                $insertStatus->linkEntity(new Status($statusText));
-                $insertStatus->execute("Failed to insert status update into database");
-                $status_id = $insertStatus->getReturn();
-
-                $alertMessage .= "Status update successfully posted\\n";
-                
-                // insert blog into database
-                $insertBlog = new InsertStatement($dbconn,
-                    "INSERT INTO blog (status_id, title, description, folder_name, text)
-                    VALUES(?,?,?,?,?);");
-                $blog = new Blog($status_id, $title, $description, $folder_name, $text);
-                $insertBlog->linkEntity($blog);
-                $insertBlog->execute("Failed to insert blog into database");
-                $blogId = $insertBlog->getReturn();
-
-                $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
-
-                // put index.php
-                $index = fopen($folderPath . "/index.php", "w") or die("Unable to open index.php file");
-                fwrite($index, 
-                    "<?php\n\t" .
-                    "\$id = {$blogId};\n\t" .
-                    'include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/template_blog_index.php"' . // include the template code
-                    "\n?>" 
-                );
-                fclose($index);
-
-                // puts additional files into files folders
-                $inputName = "additional-files";
-                if (isset($_FILES[$inputName]) && $_FILES[$inputName]["name"][0] != ""){
-                    
-                    // make files folder
-                    mkdir($folderPath . "/files");
-
-                    // upload to files folder
-                    $folderPath = $folderPath . "/files/";
-                    include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/file_upload.php";
-                }
-            }
-            
+            $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
         }
 
     }
@@ -102,13 +58,6 @@
 
         <label for="description">Description: </label>
         <textarea name="description" rows = "5" cols= "50"><?php echo $description; ?></textarea>
-
-        <label for="text-file">Text File: </label>
-        <input type="file" name="text-file">
-        <i>Accepts .txt, .md, .html files</i>
-
-        <label for="additional-files">Upload additional files: </label>
-        <input type="file" name="additional-files[]" multiple>
 
         <input type="submit" name="submit-blog" value="Post">
 
