@@ -7,7 +7,10 @@
     </div>
 
     <div class="blog-entry-datetime">
-        <?php echo date("m/d/y (h:i a)", strtotime($entry->getDatetime())); ?>
+        <?php 
+            include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php';
+            echo convert_datetime($entry->getDatetime()); 
+        ?>
     </div>
 
     <div class="blog-entry-description">

@@ -13,13 +13,14 @@
     $blog = getBlog($id);
 
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php';
 
     $heading = 
     '<a href="\blog">Return to blog</a>'.
     '<div class="blog-entry">' . 
     '<h1>' . $blog->getTitle() . "</h1>" . 
     '<p class="blog-entry-decription">' . $blog->getDescription(). "</p>" .
-    '<div class="blog-entry-datetime"><i>'. date("m/d/y (h:i a)", strtotime($blog->getDatetime())) . "</i></div>" .
+    '<div class="blog-entry-datetime"><i>'. convert_datetime($blog->getDatetime()) . "</i></div>" .
     '</div> <hr>';
 
 
