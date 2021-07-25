@@ -11,6 +11,7 @@
         $folder_name = str_replace(" ", "_", $title);
 
         $validFileType = true;
+        
         // converts text file to html
         if (isset($_FILES["text-file"]) && $_FILES["text-file"]["name"] != ""){
 
@@ -29,13 +30,10 @@
 
         if ($validFileType){
 
-            // make folder
             $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $folder_name;
             if (is_dir($folderPath)){
                 $alertMessage = "Title already taken, change title.";
             }else{
-
-                mkdir($folderPath);
                 
                 // insert status update for blog
                 $statusText =
@@ -62,28 +60,7 @@
                 $blogId = $insertBlog->getReturn();
 
                 $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
-
-                // put index.php
-                $index = fopen($folderPath . "/index.php", "w") or die("Unable to open index.php file");
-                fwrite($index, 
-                    "<?php\n\t" .
-                    "\$id = {$blogId};\n\t" .
-                    'include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/template_blog_index.php"' . // include the template code
-                    "\n?>" 
-                );
-                fclose($index);
-
-                // puts additional files into files folders
-                $inputName = "additional-files";
-                if (isset($_FILES[$inputName]) && $_FILES[$inputName]["name"][0] != ""){
-                    
-                    // make files folder
-                    mkdir($folderPath . "/files");
-
-                    // upload to files folder
-                    $folderPath = $folderPath . "/files/";
-                    include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/file_upload.php";
-                }
+                
             }
             
         }
@@ -106,9 +83,6 @@
         <label for="text-file">Text File: </label>
         <input type="file" name="text-file">
         <i>Accepts .txt, .md, .html files</i>
-
-        <label for="additional-files">Upload additional files: </label>
-        <input type="file" name="additional-files[]" multiple>
 
         <input type="submit" name="submit-blog" value="Post">
 
