@@ -21,8 +21,6 @@
         ?>
 
         <input type="submit" name="project-select-delete" value="Delete selected projects"><br>
-        <div><b>OR</b></div>
-        <input type="submit" name="reset-projects" value="Remove all projects"><br>
 
         <?php
         // continuing if there are no projects to delete
@@ -41,17 +39,7 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        if (isset($_POST["reset-projects"])){
-
-            // delete statement to remove all rows from entry
-            // delete mode is cascade for 'file' table, so I don't need an extra delete statement for 'file'
-            $deleteAll = new ExecuteStatement($dbconn,
-                "DELETE FROM project;"); 
-            $deleteAll->execute("Fail to delete all projects");
-
-            $alertMessage = "Successfully deleted all projects from database";
-
-        }elseif (isset($_POST["project-select-delete"])){
+        if (isset($_POST["project-select-delete"])){
             
             $deleteSelect = new LinkedExecuteStatement($dbconn,
                 "DELETE FROM project WHERE id = ?");

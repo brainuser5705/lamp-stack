@@ -21,8 +21,6 @@
         ?>
 
         <input type="submit" name="status-select-delete" value="Delete selected status updates"><br>
-        <div><b>OR</b></div>
-        <input type="submit" name="reset-statuses" value="Remove all status updates"><br>
 
         <?php
             }else{
@@ -39,17 +37,7 @@
 
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
-        if (isset($_POST["reset-statuses"])){
-
-            // delete statement to remove all rows from status
-            // delete mode is cascade for 'file' table, so I don't need an extra delete statement for 'file'
-            $deleteAll = new ExecuteStatement($dbconn,
-                "DELETE FROM status;"); 
-            $deleteAll->execute("Fail to delete entries");
-
-            $alertMessage = "Successfully deleted all status updates from database";
-
-        }elseif (isset($_POST["status-select-delete"])){
+        if (isset($_POST["status-select-delete"])){
             
             $deleteSelect = new LinkedExecuteStatement($dbconn,
                 "DELETE FROM status WHERE id = ?");
