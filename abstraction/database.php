@@ -9,7 +9,7 @@
  * Server variables
  * @var options intial configuration of PDO
  */
-$db = parse_url(getenv("DATABASE_URL"));
+$db = parse_url(getenv("HEROKU_POSTGRESQL_CRIMSON_URL"));
 $options = [
     PDO::ATTR_EMULATE_PREPARES   => false,
     PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
