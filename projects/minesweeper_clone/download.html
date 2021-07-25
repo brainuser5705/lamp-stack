@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Minesweeper GUI - Download</title>
+    <link href="script.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <h1>Minesweeper GUI</h1>
+    <h3>Version 1.0</h3>
+    <h2>built by Ashley Liew</h2>
+    <p>My own implementation of the classic Windows Minesweeper game</p>
+    <nav>
+        <a href="index.html"><b>About</b></a><br>
+        <a href="download.html"><b>Download</b></a><br>
+    </nav>
+
+    <hr>
+
+    <h2>
+        <a href="jar/MinesweeperGUI.jar" download> Click here to download JAR file</a>
+    </h2>
+    <br>
+
+
+    <h3><u>Instructions on how to execute JAR file</u></h3>
+
+    <h4>You must have the following installed on your computer:</h4>
+    <ul>
+        <li><a href="https://www.oracle.com/java/technologies/javase-jdk15-downloads.html" target="_blank">Java Runtime Environment</a></li>
+        <li><a href="https://openjfx.io/" target="_blank">JavaFX</a></li>
+    </ul>
+    <section style="width:auto;">
+        <h4>Running the file</h4>
+        <ul>
+            <li>Install the necessary software above.</li>
+            <li>Take note of the directory path where you install JavaFX, specifically the <code>lib</code> folder.</li>
+            <li>In your command line, go to the directory where you download the JAR file.</li>
+            <li>Type in this command: <code>java --module-path </code> <i>path-to-javafx-lib</i> <code>--add-modules javafx.controls,javafx.graphics -jar MinesweeperGUI.jar</code></li>
+            <i><b>Example:</b> Let's say the path to your JavaFX lib file is: C:\javafx\javafx-sdk-11.0.2\lib</i><br>
+                <i>The command you will put in will be: <code>java --module-path \javafx\javafx-sdk-11.0.2\lib --add-modules javafx.controls,javafx.graphics -jar MinesweeperGUI.jar</code></i>
+            <li>Press <i>'Enter'</i> and play!</li>
+        </ul>
+    </section>
+
+</body>
+</html>
