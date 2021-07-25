@@ -1,0 +1,32 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne+Mono&family=Titillium+Web&display=swap');
+
+h1, h2, h3{
+    margin: 0px;
+    padding: 2px;
+}
+
+section{
+    margin:30px 0px;
+    width: 700px;
+}
+
+section .note{
+    margin: 20px;
+}
+
+.note img{
+    width:500px;
+}
+
+.back-to-link{
+    font-family: 'Syne Mono', monospace;
+    font-size: 20px;
+}
+
+a:visited{
+    color: #1060a7;
+}
+
+a:hover{
+    color: #1791fc;
+}
