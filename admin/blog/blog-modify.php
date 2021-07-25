@@ -51,8 +51,6 @@
         ?>
 
         <input type="submit" name="blog-select-delete" value="Delete selected blogs"><br>
-        <div><b>OR</b></div>
-        <input type="submit" name="reset-blogs" value="Remove all blogs"><br>
 
         <?php
         // continuing if there are no blogs to delete
@@ -74,23 +72,7 @@
         $deleteStatus = new LinkedExecuteStatement($dbconn,
                 "DELETE FROM status WHERE id = ?");
 
-        if (isset($_POST["reset-blogs"])){
-
-            foreach($blogs as $blog){
-                rmdir_recursive($_SERVER['DOCUMENT_ROOT'] . "/blog/". $blog->getPathToIndex());
-                $deleteStatus->addValue([$blog->getStatusId()]);
-                $deleteStatus->execute("Fail to delete statuses.");
-            }
-
-            // delete statement to remove all rows from entry
-            // delete mode is cascade for 'file' table, so I don't need an extra delete statement for 'file'
-            $deleteAll = new ExecuteStatement($dbconn,
-                "DELETE FROM blog;"); 
-            $deleteAll->execute("Fail to delete all blogs");
-
-            $alertMessage = "Successfully deleted all blogs from database";
-
-        }elseif (isset($_POST["blog-select-delete"])){
+        if (isset($_POST["blog-select-delete"])){
 
             $deleteSelect = new LinkedExecuteStatement($dbconn,
                 "DELETE FROM blog WHERE id = ?");
@@ -121,16 +103,6 @@
             $alertMessage = "Auto-increment id reset to 0 for blog table";
         }
 
-    }
-
-    // function from https://stackoverflow.com/questions/7288029/php-delete-directory-that-is-not-empty/7288055
-    function rmdir_recursive($dir) {
-        foreach(scandir($dir) as $file) {
-            if ('.' === $file || '..' === $file) continue;
-            if (is_dir("$dir/$file")) rmdir_recursive("$dir/$file");
-            else unlink("$dir/$file");
-        }
-        rmdir($dir);
     }
 
 ?>

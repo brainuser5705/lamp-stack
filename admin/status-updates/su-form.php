@@ -8,9 +8,6 @@
         <i>Reminder that two spaces (not carriage return) will mean newline in Markdown.</i>
         <textarea name="status" rows="7" cols="50"></textarea>
 
-        <label for="files">Upload files:</label>
-        <input type="file" name="files[]" multiple>
-
         <input type="submit" value="Post update" name="submit-status">
     </form>  
     
@@ -35,10 +32,6 @@
         
         $status_id = $insertStatus->getReturn(); // get the id of status
         $alertMessage .= "Status (id: {$status_id}) has successfully been inserted into database\\n";
-
-        $inputName = "files";
-        $folderPath = $SU_FOLDER_PATH;
-        include $_SERVER["DOCUMENT_ROOT"] . "/abstraction/file_upload.php";
         
     }
 ?>
