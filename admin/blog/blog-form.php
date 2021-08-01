@@ -35,7 +35,7 @@
             // insert status update for blog
             $statusText =
                 "**New blog update: **" . 
-                '<a href="/blog/' . $title . '">' . $folder_name . '</a>  ' .
+                '<a href="/blog/' . $folder_name . '">' . $title . '</a>  ' .
                 "  <i>{$description}</i>";
 
             $insertStatus = new InsertStatement($dbconn,
