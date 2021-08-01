@@ -6,7 +6,7 @@
  * $id will be added to beginning of file.
  */
 
-    $id = 5;
+    $id = 6;
     
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php';
