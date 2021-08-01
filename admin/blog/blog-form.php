@@ -8,7 +8,7 @@
 
         $title = sanitize($_POST["title"]);
         $description = sanitize($_POST["description"]);
-        $folder_name = str_replace(" ", "_", $title);
+        $folder_name = str_replace(" ", "-", $title);
 
         $validFileType = true;
         
@@ -38,7 +38,7 @@
                 // insert status update for blog
                 $statusText =
                     "**New blog update: **" . 
-                    '<a href="/blog/' . $title . '">' . $title . '</a>  ' .
+                    '<a href="/blog/' . $title . '">' . $folder_name . '</a>  ' .
                     "  <i>{$description}</i>";
 
                 $insertStatus = new InsertStatement($dbconn,
