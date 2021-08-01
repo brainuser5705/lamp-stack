@@ -31,37 +31,32 @@
         if ($validFileType){
 
             $folderPath = $_SERVER['DOCUMENT_ROOT'] . "/blog/" . $folder_name;
-            if (is_dir($folderPath)){
-                $alertMessage = "Title already taken, change title.";
-            }else{
-                
-                // insert status update for blog
-                $statusText =
-                    "**New blog update: **" . 
-                    '<a href="/blog/' . $title . '">' . $folder_name . '</a>  ' .
-                    "  <i>{$description}</i>";
+            
+            // insert status update for blog
+            $statusText =
+                "**New blog update: **" . 
+                '<a href="/blog/' . $title . '">' . $folder_name . '</a>  ' .
+                "  <i>{$description}</i>";
 
-                $insertStatus = new InsertStatement($dbconn,
-                    "INSERT INTO status (text)
-                    VALUES(?);");
-                $insertStatus->linkEntity(new Status($statusText));
-                $insertStatus->execute("Failed to insert status update into database");
-                $status_id = $insertStatus->getReturn();
+            $insertStatus = new InsertStatement($dbconn,
+                "INSERT INTO status (text)
+                VALUES(?);");
+            $insertStatus->linkEntity(new Status($statusText));
+            $insertStatus->execute("Failed to insert status update into database");
+            $status_id = $insertStatus->getReturn();
 
-                $alertMessage .= "Status update successfully posted\\n";
-                
-                // insert blog into database
-                $insertBlog = new InsertStatement($dbconn,
-                    "INSERT INTO blog (status_id, title, description, folder_name, text)
-                    VALUES(?,?,?,?,?);");
-                $blog = new Blog($status_id, $title, $description, $folder_name, $text);
-                $insertBlog->linkEntity($blog);
-                $insertBlog->execute("Failed to insert blog into database");
-                $blogId = $insertBlog->getReturn();
+            $alertMessage .= "Status update successfully posted\\n";
+            
+            // insert blog into database
+            $insertBlog = new InsertStatement($dbconn,
+                "INSERT INTO blog (status_id, title, description, folder_name, text)
+                VALUES(?,?,?,?,?);");
+            $blog = new Blog($status_id, $title, $description, $folder_name, $text);
+            $insertBlog->linkEntity($blog);
+            $insertBlog->execute("Failed to insert blog into database");
+            $blogId = $insertBlog->getReturn();
 
-                $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
-                
-            }
+            $alertMessage .= "Blog (id: {$blogId}) successfully inserted into database\\n";
             
         }
 
