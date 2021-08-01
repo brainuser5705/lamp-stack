@@ -29,7 +29,7 @@
     // parse the text from database
     require '/app/vendor/autoload.php';
     $Parsedown = new Parsedown();
-    $text = $Parsedown->text($blog->getText());
+    $text = $Parsedown->text(file_get_contents('index.php'));
 
     $blogContent = 
     $heading .
