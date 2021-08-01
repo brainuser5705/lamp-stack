@@ -8,14 +8,14 @@
 
     $id = 7;
     
-    include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/blog/blog-queries.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/blog/blog-queries.php');
 
     $blog = getBlog($id);
 
-    include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php';
-    include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php';
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php');
+    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
 
     $heading = 
     '<a href="\blog">Return to blog</a>'.
