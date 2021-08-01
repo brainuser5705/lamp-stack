@@ -8,7 +8,7 @@
 
     <div class="blog-entry-datetime">
         <?php 
-            include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php';
+            include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
             echo convert_datetime($entry->getDatetime()); 
         ?>
     </div>

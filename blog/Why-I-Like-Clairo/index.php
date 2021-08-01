@@ -6,7 +6,7 @@
  * $id will be added to beginning of file.
  */
 
-    include 'include-stuff.php';
+    include_once('include-stuff.php');
 
     $id = 6;
 
