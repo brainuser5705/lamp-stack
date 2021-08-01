@@ -6,16 +6,11 @@
  * $id will be added to beginning of file.
  */
 
+    include 'include-stuff.php';
+
     $id = 7;
-    
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/blog/blog-models.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/blog/blog-queries.php');
 
     $blog = getBlog($id);
-
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php');
-    include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
 
     $heading = 
     '<a href="\blog">Return to blog</a>'.
