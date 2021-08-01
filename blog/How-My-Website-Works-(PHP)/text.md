@@ -1,9 +1,3 @@
-Welcome to the demo:
-
-1. Write Markdown text on the left
-2. Hit the __Parse__ button or `⌘ + Enter`
-3. See the result to on the right
-
 My website is a **standalone PHP application** meaning no structural frameworks or libraries were employed to make it. It is part of the LAMP stack which was how I wanted to make my site. In this blog post, I will be describing how my website works from the backend perspective, of course with limited details for security purposes.  
 
 ## Database Entities
