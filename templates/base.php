@@ -22,6 +22,11 @@
 
             <div class="visible-body">
 
+
+                <h1 id="header">
+                    Ashley says...
+                </h1>
+                
                 <nav>
                     <hr>
                     <?php
