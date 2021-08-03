@@ -10,5 +10,17 @@
                 include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
                 echo convert_datetime($status->getDatetime()); 
             ?>
+
+        <br>
+
+        Id: <?php
+            session_start();
+            if (isset($_SESSION["admin"])){
+                echo $status->getId();';
+            }
+        ?>
+
     </div>
 </div>
+
+<hr>

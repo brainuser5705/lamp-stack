@@ -7,6 +7,9 @@
 
             $statuses = getStatuses();
 
+            // formatting for checkboxes
+            include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
+
             if (!empty($statuses)){ // if there is any status
 
                 echo '<div>Choose which status to delete:</div>';
@@ -14,7 +17,9 @@
                 // Create checkbox inputs for each status
                 foreach($statuses as $status){
                     echo '<input type="checkbox" name="' . $status->getId() . '">';
-                    $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . $status->getDatetime() . "}";
+
+                    $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . convert_datetime($status->getDatetime()) . "}\n";
+
                     echo '<label for="' . $status->getId() .'">' . $label . "</label>";
                     echo "<br>";
                 }
@@ -54,7 +59,7 @@
 
             // reset for 'status' table
             $resetAutostatus = new ExecuteStatement($dbconn,
-            "ALTER TABLE status AUTO_INCREMENT = 0;");
+            "ALTER SEQUENCE status RESTART WITH 0");
             $resetAutostatus->execute("Cannot reset auto increment value for <code>'status'</code> table");   
 
             $alertMessage = "Auto-increment id reset to 0 for status table";
