@@ -21,7 +21,7 @@
         <div class="visible">
             
             <header>
-                <h1 id="website-name">brainuser5705</h1>
+                <h1 id="website-name"><a href="/">brainuser5705</a></h1>
                 <div>status updates of Ashley Liew</div>
             </header>
 

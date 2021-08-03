@@ -2,7 +2,7 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>brainuser5705 | Admin</title>
+        <title><a href="/">brainuser5705 | Admin</a></title>
         <link rel="stylesheet" href="/static/css/layout.css">
         <link rel="stylesheet" href="/static/css/styles.css">
         <link rel="stylesheet" href="/static/css/admin.css">
@@ -16,12 +16,12 @@
             </header>
 
             <div class="visible-body">
+                
                 <nav>
                     <hr>
                     <a href="/admin/">Forms</a>
                     <a href="/admin/modify.php">Modify</a>
-                    <a href="/">Statuses</a>
-                    <hr>
+                    Statuses
                 </nav>
 
                 <a href="/admin/logout.php">Logout</a>
