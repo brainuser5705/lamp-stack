@@ -19,11 +19,6 @@
     </head>
     <body>
         <div class="visible">
-            
-            <header>
-                <h1 id="website-name"><a href="/">brainuser5705</a></h1>
-                <div>status updates of Ashley Liew</div>
-            </header>
 
             <div class="visible-body">
 
