@@ -20,12 +20,10 @@
                     <hr>
                     <a href="/admin/">Forms</a>
                     <a href="/admin/modify.php">Modify</a>
-                    <a href="/admin/logout.php">Logout</a>
-                    <hr>
-                    <a href="\projects">Projects</a>
                     <a href="\status-updates">Statuses</a>
-                    <a href="\blog">Blog</a>
                     <hr>
                 </nav>
+
+                <a href="/admin/logout.php">Logout</a>
 
                 <main>

@@ -1,10 +1,29 @@
-<?php
+<?php 
 
+    include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
+    include '/status-updates/su-models.php';
+    include '/status-updates/su-queries.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php';
 
-    $title = "brainuser5705";
+    $title = "Status Updates";
 
-    $content = render('static/index.html');
+    $statuses = getStatuses();
 
-    echo render('base.php', ["title"=>$title, "content"=>$content]);
+    $statusContent = "";
+    if (!empty($statuses)){
+
+        require '/app/vendor/autoload.php';
+        $Parsedown = new Parsedown();
+
+        foreach($statuses as $status){
+            $statusContent .= render('status-updates.php', ["status"=>$status, "Parsedown"=>$Parsedown]);
+        }
+        $statusContent .= '<hr><i>Markdown parsed with <a href="https://github.com/erusev/parsedown">Parsedown.</a></i>';
+    
+    }else{
+        $statusContent = "No status updates yet.";
+    }
+
+    echo render('base.php', ["title"=>$title, "styleArr"=>["su.css"], "content"=>$statusContent]);
+
 ?>

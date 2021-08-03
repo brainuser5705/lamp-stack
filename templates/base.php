@@ -29,9 +29,7 @@
 
                 <nav>
                     <hr>
-                    <a href="\projects">Projects</a>
                     <a href="\status-updates">Statuses</a>
-                    <a href="\blog">Blog</a>
                     <?php
                         session_start();
                         if (isset($_SESSION["admin"])){
