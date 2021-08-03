@@ -119,11 +119,3 @@ footer{
     padding: 10px 0px;
     background-color: #1060a7;
 }
-
-footer a{
-    color: white;
-}
-
-footer a:hover{
-    color: rgb(184, 184, 184);
-}

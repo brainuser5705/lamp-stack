@@ -18,7 +18,7 @@
                 foreach($statuses as $status){
                     echo '<input type="checkbox" name="' . $status->getId() . '">';
 
-                    $label = " <i>id</i>: " . $status->getId() . "\n<i>datetime</i>: " . convert_datetime($status->getDatetime());
+                    $label = " <i>id</i>: " . $status->getId() . "<br><i>datetime</i>: " . convert_datetime($status->getDatetime());
 
                     echo '<label for="' . $status->getId() .'">' . $label . "</label>";
                     echo "<br>";

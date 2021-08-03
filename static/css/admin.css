@@ -34,13 +34,12 @@ input[type="checkbox"] + label, input[type="radio"] + label{
 /* submit button */
 
 input[type="submit"]{
-    margin-top: 2em;
     color: white;
     background-color: #1060a7;
     
     border: none;
     border-radius: 5px;
-    padding: 5px;
+    padding: 10px;
 }
 
 input[type="submit"]:hover{

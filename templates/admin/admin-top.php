@@ -21,8 +21,7 @@
                     <hr>
                     <a href="/admin/">Forms</a>
                     <a href="/admin/modify.php">Modify</a>
+                    <a href="/admin/logout.php">Logout</a>
                 </nav>
-
-                <a href="/admin/logout.php">Logout</a>
 
                 <main>
