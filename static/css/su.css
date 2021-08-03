@@ -7,10 +7,6 @@
     font-style: italic;
 }
 
-.status-update br{
-    margin: 0.5em;
-}
-
 .status-update-datetime{
     font-size: 15px;
     font-style: italic;
