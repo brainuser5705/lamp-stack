@@ -9,7 +9,7 @@
 
     $statuses = getStatuses();
 
-    $statusContent = "<h1>Let's see what Ashley wants to share</h1>";
+    $statusContent = "<h1>Ashley says...</h1>";
     if (!empty($statuses)){
 
         require '/app/vendor/autoload.php';

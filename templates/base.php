@@ -22,7 +22,7 @@
             
             <header>
                 <h1 id="website-name">brainuser5705</h1>
-                <div>the internet home of Ashley Liew</div>
+                <div>status updates of Ashley Liew</div>
             </header>
 
             <div class="visible-body">
