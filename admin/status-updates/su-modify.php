@@ -38,26 +38,23 @@
     if ($_SERVER["REQUEST_METHOD"] == "POST"){
 
         if (isset($_POST["status-select-delete"])){
-            
-?>
-        <script>
+
+            echo '<script>
+                if (confirm("Are you sure you want to delete")){';
         
-            if (confirm("Are you sure you want to delete?")){
-                <?php 
-                    $deleteSelect = new LinkedExecuteStatement($dbconn,
-                    "DELETE FROM status WHERE id = ?");
+                $deleteSelect = new LinkedExecuteStatement($dbconn,
+                "DELETE FROM status WHERE id = ?");
 
-                    foreach($_POST as $k=>$v){
-                        $deleteSelect->addValue([$k]);
-                    }
-                    $deleteSelect->execute("Fail to delete statuses.");
+                foreach($_POST as $k=>$v){
+                    $deleteSelect->addValue([$k]);
+                }
+                $deleteSelect->execute("Fail to delete statuses.");
 
-                    $alertMessage = "Successfully deleted selected status updates from database";
-                ?>
-            }
-        </script>
-
-<?php
+                $alertMessage = "Successfully deleted selected status updates from database";
+                
+            echo '}
+            </script>';
+    
         }elseif (isset($_POST["status-reset-id"])){
 
             // reset for 'status' table
