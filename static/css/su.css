@@ -1,9 +1,15 @@
 .status-update{
     margin: 1em 0em;
+    color: #1791fc;
+}
+
+.status-update a{
+    font-style: italic;
 }
 
 .status-update-datetime{
     font-size: 15px;
     font-style: italic;
+    text-align: left;
 }
 

@@ -18,7 +18,7 @@
         foreach($statuses as $status){
             $statusContent .= render('status-updates.php', ["status"=>$status, "Parsedown"=>$Parsedown]);
         }
-        $statusContent .= '<hr><i>Markdown parsed with <a href="https://github.com/erusev/parsedown">Parsedown.</a></i>';
+        $statusContent .= '<i>Markdown parsed with <a href="https://github.com/erusev/parsedown">Parsedown.</a></i>';
     
     }else{
         $statusContent = "No status updates yet.";

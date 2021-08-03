@@ -25,7 +25,7 @@
                 }
         ?>
 
-        <input type="submit" name="status-select-delete" value="Delete selected status updates" onclick="return confirm('Are you sure you want to do that?');"><br>
+        <input type="submit" name="status-select-delete" value="Delete selected status updates" onclick="return confirm('Are you sure you want to do that?');">
         <?php
             }else{
                 echo "No status updates yet.<br>";
