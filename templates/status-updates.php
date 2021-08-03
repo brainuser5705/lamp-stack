@@ -13,10 +13,11 @@
 
         <br>
 
-        Id: <?php
+        Id: 
+        <?php
             session_start();
             if (isset($_SESSION["admin"])){
-                echo $status->getId();';
+                echo $status->getId();
             }
         ?>
 
