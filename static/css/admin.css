@@ -47,3 +47,8 @@ input[type="submit"]:hover{
     cursor: pointer;
     background-color: #1791fc;;
 }
+
+header{
+    font-family: 'Syne Mono', monospace;
+    text-align: center;
+}

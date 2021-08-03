@@ -18,7 +18,7 @@
                 foreach($statuses as $status){
                     echo '<input type="checkbox" name="' . $status->getId() . '">';
 
-                    $label = "{ <i>id</i>: " . $status->getId() . " , <i>datetime</i>: " . convert_datetime($status->getDatetime()) . "}\n";
+                    $label = " <i>id</i>: " . $status->getId() . "\n<i>datetime</i>: " . convert_datetime($status->getDatetime());
 
                     echo '<label for="' . $status->getId() .'">' . $label . "</label>";
                     echo "<br>";
@@ -26,13 +26,11 @@
         ?>
 
         <input type="submit" name="status-select-delete" value="Delete selected status updates" onclick="return confirm('Are you sure you want to do that?');"><br>
-
         <?php
             }else{
                 echo "No status updates yet.<br>";
             }
         ?>
-
         <input type="submit" name="status-reset-id" value="Reset auto-increment id"><br>
 
     </form>
@@ -62,7 +60,7 @@
             "ALTER SEQUENCE status RESTART WITH 0");
             $resetAutostatus->execute("Cannot reset auto increment value for <code>'status'</code> table");   
 
-            $alertMessage = "Auto-increment id reset to 0 for status table";
+            $alertMessage = "Auto-increment id reset to 0";
         }
 
     }
