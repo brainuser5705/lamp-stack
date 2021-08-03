@@ -33,3 +33,7 @@ footer a{
 footer a:hover{
     color: rgb(184, 184, 184);
 }
+
+footer a:visited{
+    color: white;
+}

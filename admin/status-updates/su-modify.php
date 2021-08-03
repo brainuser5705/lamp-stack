@@ -31,7 +31,7 @@
                 echo "No status updates yet.<br>";
             }
         ?>
-        <input type="submit" name="status-reset-id" value="Reset auto-increment id"><br>
+        <input type="submit" name="status-reset-id" value="Reset auto-increment id">
 
     </form>
 </div>
