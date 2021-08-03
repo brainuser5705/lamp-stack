@@ -19,6 +19,7 @@ header{
 #website-name{
     color: #1060a7;
     margin: 2px; /* adding some spacing */
+    text-decoration: none;
     /* text-shadow: 0px 2px 5px #1791fc; */
 }
 
