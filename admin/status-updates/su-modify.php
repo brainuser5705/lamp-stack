@@ -20,7 +20,7 @@
                 }
         ?>
 
-        <input type="submit" name="status-select-delete" value="Delete selected status updates"><br>
+        <input type="submit" name="status-select-delete" value="Delete selected status updates" onclick="return confirm('Are you sure you want to do that?');"><br>
 
         <?php
             }else{
@@ -39,21 +39,16 @@
 
         if (isset($_POST["status-select-delete"])){
 
-            echo '<script>
-                if (confirm("Are you sure you want to delete")){';
-        
-                $deleteSelect = new LinkedExecuteStatement($dbconn,
-                "DELETE FROM status WHERE id = ?");
+            $deleteSelect = new LinkedExecuteStatement($dbconn,
+            "DELETE FROM status WHERE id = ?");
 
-                foreach($_POST as $k=>$v){
-                    $deleteSelect->addValue([$k]);
-                }
-                $deleteSelect->execute("Fail to delete statuses.");
+            foreach($_POST as $k=>$v){
+                $deleteSelect->addValue([$k]);
+            }
+            $deleteSelect->execute("Fail to delete statuses.");
 
-                $alertMessage = "Successfully deleted selected status updates from database";
-                
-            echo '}
-            </script>';
+            $alertMessage = "Successfully deleted selected status updates from database";
+
     
         }elseif (isset($_POST["status-reset-id"])){
 
