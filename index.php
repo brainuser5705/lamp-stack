@@ -1,8 +1,8 @@
 <?php 
 
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/database.php';
-    include '/status-updates/su-models.php';
-    include '/status-updates/su-queries.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/status-updates/su-models.php';
+    include $_SERVER['DOCUMENT_ROOT'] . '/status-updates/su-queries.php';
     include $_SERVER['DOCUMENT_ROOT'] . '/abstraction/render.php';
 
     $title = "Status Updates";

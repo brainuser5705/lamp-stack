@@ -20,7 +20,7 @@
                     <hr>
                     <a href="/admin/">Forms</a>
                     <a href="/admin/modify.php">Modify</a>
-                    <a href="\status-updates">Statuses</a>
+                    <a href="/">Statuses</a>
                     <hr>
                 </nav>
 
