@@ -1,6 +1,6 @@
 .status-update{
     margin: 1em 0em;
-    color: #1791fc;
+    color: #1060a7;
 }
 
 .status-update a{
@@ -10,6 +10,7 @@
 .status-update-datetime{
     font-size: 15px;
     font-style: italic;
-    text-align: left;
+    text-align: right;
+    color: #1791fc;
 }
 
