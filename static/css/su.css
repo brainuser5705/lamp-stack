@@ -1,16 +1,35 @@
+[data-theme="light"]{
+    --datetime-color: #777;
+    --status-color: #2b8fe7;
+    --link-color: #67aae5;
+    --hover-link-color: #6caee7;
+}
+
+[data-theme="dark"]{
+    --datetime-color: #7a8b9b;
+    --status-color: #357dbd;
+    --link-color: #65a2d6;
+    --hover-link-color: #7caeda;
+}
+
 .status-update{
     margin: 1em 0em;
-    color: #1060a7;
+    color: var(--status-color);
 }
 
 .status-update a{
     font-style: italic;
+    color: var(--link-color);
+}
+
+.status-update a:hover{
+    color: var(--hover-link-color);
 }
 
 .status-update-datetime{
     font-size: 15px;
     font-style: italic;
     text-align: right;
-    color: #1791fc;
+    color: var(--datetime-color);
 }
 

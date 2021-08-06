@@ -17,10 +17,8 @@ html{
 
 /* Website name */
 #website-name{
-    color: #1060a7;
     margin: 2px; /* adding some spacing */
     text-decoration: none;
-    /* text-shadow: 0px 2px 5px #1791fc; */
 }
 
 /* navigation bar */
@@ -33,6 +31,11 @@ nav a{
     margin: 0em 1em;
     font-size: 20px;
     text-decoration: none;
+}
+
+/* Toogle button */
+#switch-theme{
+    
 }
 
 hr{
@@ -114,8 +117,6 @@ main{
 
 footer{
     width: 100%;
-    color:white;
     text-align: center;
     padding: 10px 0px;
-    background-color: #1060a7;
 }

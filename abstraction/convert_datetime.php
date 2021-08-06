@@ -8,8 +8,8 @@
         //changing timezone
         $datetime->setTimezone(new DateTimeZone('America/New_York'));
 
-		//formatting datetime 
-        $new_datetime = $datetime->format('m/d/y (h:i a)');
+		//formatting datetime (https://www.php.net/manual/en/datetime.format.php)
+        $new_datetime = $datetime->format('g:i a - F j, Y');
 		
         return $new_datetime;
 

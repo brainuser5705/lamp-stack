@@ -16,8 +16,10 @@
                 }
             }
         ?>
+
     </head>
     <body>
+
         <div class="visible">
 
             <div class="visible-body">
@@ -28,17 +30,16 @@
                 </h1>
                 
                 <nav>
-                    <hr>
                     <?php
                         session_start();
                         if (isset($_SESSION["admin"])){
                             echo '<a href="/admin/">Admin</a>';
                         }
                     ?>
-                    <hr>
                 </nav>
     
                 <main>
+                    <button id="theme-switch" >Dark Mode</button>
                     <?php echo $content; ?>
                 </main>
                 
@@ -52,6 +53,8 @@
             <a href="https://www.ashleyliew.com/">Go to my main site</a>
 
         </footer>
+
+        <script src = "/static/js/toggle-mode.js"></script>
 
     </body>
 </html>

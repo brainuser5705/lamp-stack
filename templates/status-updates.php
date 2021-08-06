@@ -6,7 +6,7 @@
         ?>
     </div>
     <div class="status-update-datetime">
-        - <?php 
+        @ <?php 
                 include_once($_SERVER['DOCUMENT_ROOT'] . '/abstraction/convert_datetime.php');
                 echo convert_datetime($status->getDatetime()); 
             ?>
