@@ -39,7 +39,7 @@
                 </nav>
     
                 <main>
-                    <button id="theme-switch" >Dark Mode</button>
+                    <button id="theme-switch" >Light Mode</button>
                     <?php echo $content; ?>
                 </main>
                 
